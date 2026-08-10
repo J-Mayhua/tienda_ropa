@@ -24,7 +24,7 @@ $usuario_autenticado = isset($_SESSION['usuario']);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tienda ApliDig</title>
+    <title>Tienda Ropa</title>
     <link rel="stylesheet" href="/Tienda_ropa/publico/recursos/css/estilos.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -34,7 +34,7 @@ $usuario_autenticado = isset($_SESSION['usuario']);
         <div class="contenedor-cabecera">
             <!-- Logo e imagen a la izquierda -->
             <div class="logo-section">
-                <h1 class="logo">Tienda ApliDig</h1>
+                <h1 class="logo">Tienda Ropa</h1>
                 <div class="logo-image-container">
                     <img src="/Tienda_ropa/publico/recursos/imagenes/logo.jpg" alt="Logo" class="logo-image">
                 </div>

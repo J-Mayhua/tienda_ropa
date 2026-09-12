@@ -2,7 +2,6 @@
 # Excluir archivos innecesarios para el repositorio
 
 ## IDE y Editor
-.vscode/
 .idea/
 *.swp
 *.swo
@@ -90,7 +89,6 @@ database_test.sqlite
 *.ipr
 
 # VSCode
-.vscode/
 *.code-workspace
 .history/
 
@@ -118,3 +116,6 @@ composer.phar
 ## Otros
 .htaccess.local
 .htpasswd
+branch_structure.json
+temp_auto_push.bat
+temp_interactive_push.bat

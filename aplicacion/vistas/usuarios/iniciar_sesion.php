@@ -19,14 +19,20 @@
         </div>
     <?php endif; ?>
     
-    <form method="POST" action="/Tienda_ropa/publico/index.php?accion=iniciar_sesion">
-        <label for="email">Correo Electrónico:</label>
-        <input type="email" name="email" id="email" required>
+    <form method="POST" action="/Tienda_ropa/publico/index.php?accion=iniciar_sesion" class="login-form">
+        <div class="form-group">
+            <label for="email">Correo Electrónico:</label>
+            <input type="email" name="email" id="email" required>
+        </div>
 
-        <label for="password">Contraseña:</label>
-        <input type="password" name="password" id="password" required>
+        <div class="form-group">
+            <label for="password">Contraseña:</label>
+            <input type="password" name="password" id="password" required>
+        </div>
 
-        <button type="submit">Iniciar Sesión</button>
+        <div class="form-actions">
+            <button type="submit" class="btn">Iniciar Sesión</button>
+        </div>
     </form>
 
     <p>¿No tienes una cuenta? <a href="/Tienda_ropa/publico/index.php?accion=registrarse">Regístrate aquí</a></p>

@@ -6,7 +6,7 @@ require_once __DIR__ . '/../plantillas/cabecera.php';
 <div class="contenedor">
     <h2>Gestionar Productos</h2>
     <a href="/Tienda_ropa/publico/index.php?accion=listar_productos" class="btn">Volver a la Lista</a>
-    <form action="/Tienda_ropa/publico/index.php?accion=añadir_producto" method="post" enctype="multipart/form-data">
+    <form action="/Tienda_ropa/publico/index.php?accion=añadir_producto" method="post" enctype="multipart/form-data" class="form-card">
         <div class="form-group">
             <label for="nombre">Nombre:</label>
             <input type="text" id="nombre" name="nombre" required>
@@ -43,7 +43,10 @@ require_once __DIR__ . '/../plantillas/cabecera.php';
             <label for="imagen">Imagen:</label>
             <input type="file" id="imagen" name="imagen" accept="image/*" required>
         </div>
-        <button type="submit" class="btn">Añadir Producto</button>
+        <div class="form-actions">
+            <button type="submit" class="btn">Añadir Producto</button>
+            <a href="/Tienda_ropa/publico/index.php?accion=listar_productos" class="btn btn-secundario">Volver a la Lista</a>
+        </div>
     </form>
 </div>
 

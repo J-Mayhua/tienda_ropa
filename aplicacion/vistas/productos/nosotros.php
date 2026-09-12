@@ -1,7 +1,7 @@
 <?php
 // aplicacion/vistas/empresa/nosotros.php
 
-require_once __DIR__ . '/../../configuracion/config.php';
+require_once __DIR__ . '/../../../configuracion/config.php';
 require_once __DIR__ . '/../plantillas/cabecera.php';
 ?>
 
@@ -25,7 +25,7 @@ require_once __DIR__ . '/../plantillas/cabecera.php';
                 <h2 class="section-title">Una pasión por la moda que comenzó con un sueño</h2>
                 <p class="section-text">Nacimos en un pequeño taller en el corazón de Lima, con la visión de crear prendas que combinen calidad, estilo y accesibilidad. Lo que comenzó como un emprendimiento familiar, hoy se ha convertido en una de las marcas de moda más reconocidas del país.</p>
                 <p class="section-text">Nuestro compromiso con la calidad y la innovación nos ha permitido crecer y expandirnos, sin perder esa esencia y dedicación con la que confeccionamos cada pieza desde el primer día.</p>
-                
+
                 <div class="mission-values">
                     <div class="mission-card">
                         <div class="mission-icon">
@@ -34,7 +34,7 @@ require_once __DIR__ . '/../plantillas/cabecera.php';
                         <h3>Nuestra Misión</h3>
                         <p>Inspirar confianza y expresión individual a través de prendas excepcionales, sostenibles y accesibles para todos.</p>
                     </div>
-                    
+
                     <div class="mission-card">
                         <div class="mission-icon">
                             <i class="fas fa-eye"></i>
@@ -44,7 +44,7 @@ require_once __DIR__ . '/../plantillas/cabecera.php';
                     </div>
                 </div>
             </div>
-            
+
             <div class="image-col" data-aos="fade-left">
                 <div class="about-image-container">
                     <img src="../publico/recursos/imagenes/nosotros/tienda-historia.jpg" alt="Historia de StyleHub" class="about-image">
@@ -66,7 +66,7 @@ require_once __DIR__ . '/../plantillas/cabecera.php';
             <h2 class="section-title">Nuestros Valores</h2>
             <p class="section-subtitle">Los principios que guían cada decisión que tomamos</p>
         </div>
-        
+
         <div class="values-grid">
             <div class="value-card" data-aos="fade-up" data-aos-delay="100">
                 <div class="value-icon">
@@ -75,7 +75,7 @@ require_once __DIR__ . '/../plantillas/cabecera.php';
                 <h3>Sostenibilidad</h3>
                 <p>Compromiso con prácticas responsables con el medio ambiente en toda nuestra cadena de producción.</p>
             </div>
-            
+
             <div class="value-card" data-aos="fade-up" data-aos-delay="200">
                 <div class="value-icon">
                     <i class="fas fa-heart"></i>
@@ -83,7 +83,7 @@ require_once __DIR__ . '/../plantillas/cabecera.php';
                 <h3>Pasión</h3>
                 <p>Amamos lo que hacemos y ponemos nuestro corazón en cada prenda que diseñamos.</p>
             </div>
-            
+
             <div class="value-card" data-aos="fade-up" data-aos-delay="300">
                 <div class="value-icon">
                     <i class="fas fa-gem"></i>
@@ -91,7 +91,7 @@ require_once __DIR__ . '/../plantillas/cabecera.php';
                 <h3>Calidad</h3>
                 <p>Buscamos la excelencia en cada detalle, desde la selección de materiales hasta el acabado final.</p>
             </div>
-            
+
             <div class="value-card" data-aos="fade-up" data-aos-delay="400">
                 <div class="value-icon">
                     <i class="fas fa-handshake"></i>
@@ -111,7 +111,7 @@ require_once __DIR__ . '/../plantillas/cabecera.php';
             <h2 class="section-title">Nuestro Equipo</h2>
             <p class="section-subtitle">Talento y pasión detrás de cada creación</p>
         </div>
-        
+
         <div class="team-grid">
             <div class="team-card" data-aos="fade-up" data-aos-delay="100">
                 <div class="team-image-container">
@@ -126,7 +126,7 @@ require_once __DIR__ . '/../plantillas/cabecera.php';
                     <span>Director Creativo</span>
                 </div>
             </div>
-            
+
             <div class="team-card" data-aos="fade-up" data-aos-delay="200">
                 <div class="team-image-container">
                     <img src="../publico/recursos/imagenes/nosotros/team-2.jpg" alt="Diseñadora" class="team-image">
@@ -140,7 +140,7 @@ require_once __DIR__ . '/../plantillas/cabecera.php';
                     <span>Diseñadora Principal</span>
                 </div>
             </div>
-            
+
             <div class="team-card" data-aos="fade-up" data-aos-delay="300">
                 <div class="team-image-container">
                     <img src="../publico/recursos/imagenes/nosotros/team-3.jpg" alt="Gerente" class="team-image">
@@ -154,7 +154,7 @@ require_once __DIR__ . '/../plantillas/cabecera.php';
                     <span>Gerente de Producción</span>
                 </div>
             </div>
-            
+
             <div class="team-card" data-aos="fade-up" data-aos-delay="400">
                 <div class="team-image-container">
                     <img src="../publico/recursos/imagenes/nosotros/team-4.jpg" alt="Marketing" class="team-image">
@@ -180,7 +180,7 @@ require_once __DIR__ . '/../plantillas/cabecera.php';
             <h2 class="section-title">Nuestras Tiendas</h2>
             <p class="section-subtitle">Visítanos y vive la experiencia StyleHub</p>
         </div>
-        
+
 </section>
 
 <!-- Testimonios -->
@@ -191,7 +191,7 @@ require_once __DIR__ . '/../plantillas/cabecera.php';
             <h2 class="section-title">Testimonios</h2>
             <p class="section-subtitle">La satisfacción de nuestros clientes es nuestra mejor recompensa</p>
         </div>
-        
+
 </section>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>

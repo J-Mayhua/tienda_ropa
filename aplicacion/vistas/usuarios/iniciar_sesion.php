@@ -4,9 +4,9 @@
 
 <div class="contenedor-inicio-sesion">
     <h1>Iniciar Sesión</h1>
-    
+
     <?php require __DIR__ . '/../plantillas/mensajes.php'; ?>
-    
+
     <form method="POST" action="/Tienda_ropa/publico/index.php?accion=iniciar_sesion">
         <?php echo csrf_field(); ?>
         <label for="email">Correo Electrónico:</label>

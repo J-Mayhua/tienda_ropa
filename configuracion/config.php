@@ -10,7 +10,7 @@ $dotenv->safeLoad();
 $variablesDb = ['DB_HOST', 'DB_NAME', 'DB_USER', 'DB_PASSWORD'];
 foreach ($variablesDb as $variableDb) {
     $valor = $_ENV[$variableDb] ?? getenv($variableDb);
-    if ($valor === false || $valor === '') {
+    if ($valor === false) {
         throw new RuntimeException("Falta la variable de entorno {$variableDb}.");
     }
     define($variableDb, $valor);

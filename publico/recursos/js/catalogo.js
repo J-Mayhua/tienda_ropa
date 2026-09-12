@@ -1,5 +1,5 @@
 // Efectos 3D para las tarjetas - más sutil
-document.querySelectorAll('.product-card').forEach(card => {
+document.querySelectorAll('.tarjeta-producto').forEach(card => {
     card.addEventListener('mousemove', (e) => {
         // Reducimos el efecto dividiendo por un número mayor (25 en lugar de 15)
         const xAxis = (window.innerWidth / 2 - e.pageX) / 25;
@@ -17,10 +17,10 @@ document.querySelectorAll('.product-card').forEach(card => {
 });
 
 // Filtros de categoría
-document.querySelectorAll('.category-btn').forEach(btn => {
+document.querySelectorAll('.boton-categoria').forEach(btn => {
     btn.addEventListener('click', function() {
-        document.querySelector('.category-btn.active').classList.remove('active');
-        this.classList.add('active');
+        document.querySelector('.boton-categoria.activo').classList.remove('activo');
+        this.classList.add('activo');
         
         // Aquí iría la lógica AJAX para filtrar
         console.log(`Filtrar por: ${this.textContent}`);
@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
         form.addEventListener('submit', function(e) {
             e.preventDefault();
             
-            const addButton = this.querySelector('.add-to-cart');
+            const addButton = this.querySelector('.anadir-carrito');
             const isLoggedIn = addButton.getAttribute('data-logged-in') === 'true';
             
             if (isLoggedIn) {

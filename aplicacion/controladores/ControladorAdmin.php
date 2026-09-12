@@ -1,8 +1,14 @@
 <?php
 // aplicacion/controladores/ControladorAdmin.php
-require_once __DIR__ . '/../modelos/ModeloProductos.php';
-require_once __DIR__ . '/../modelos/ModeloPedidos.php';
-require_once __DIR__ . '/../modelos/ModeloUsuarios.php';
+
+namespace Tienda\Controladores;
+
+require_once __DIR__ . '/../../configuracion/uploads.php';
+
+use Tienda\Modelos\ModeloPedidos;
+use Tienda\Modelos\ModeloProductos;
+use Tienda\Modelos\ModeloUsuarios;
+use RuntimeException;
 
 class ControladorAdmin {
     private $modeloProductos;
@@ -82,10 +88,13 @@ class ControladorAdmin {
             // Procesar la subida de la imagen
             $imagen = '';
             if (isset($_FILES['imagen']) && $_FILES['imagen']['error'] === UPLOAD_ERR_OK) {
-                $rutaDestino = __DIR__ . '/../publico/imagenes/productos/' . basename($_FILES['imagen']['name']);
-                if (move_uploaded_file($_FILES['imagen']['tmp_name'], $rutaDestino)) {
-                    $imagen = basename($_FILES['imagen']['name']);
-                } else {
+                try {
+                    $nombreImagen = guardar_imagen_subida(
+                        $_FILES['imagen'],
+                        __DIR__ . '/../../publico/recursos/imagenes/productos'
+                    );
+                    $imagen = '/Tienda_ropa/publico/recursos/imagenes/productos/' . $nombreImagen;
+                } catch (RuntimeException $e) {
                     $_SESSION['error'] = "Error al subir la imagen.";
                     header('Location: /Tienda_ropa/publico/index.php?accion=añadir_producto');
                     exit();
@@ -130,10 +139,13 @@ class ControladorAdmin {
             // Procesar la subida de la imagen
             $imagen = '';
             if (isset($_FILES['imagen']) && $_FILES['imagen']['error'] === UPLOAD_ERR_OK) {
-                $rutaDestino = __DIR__ . '/../publico/imagenes/productos/' . basename($_FILES['imagen']['name']);
-                if (move_uploaded_file($_FILES['imagen']['tmp_name'], $rutaDestino)) {
-                    $imagen = basename($_FILES['imagen']['name']);
-                } else {
+                try {
+                    $nombreImagen = guardar_imagen_subida(
+                        $_FILES['imagen'],
+                        __DIR__ . '/../../publico/recursos/imagenes/productos'
+                    );
+                    $imagen = '/Tienda_ropa/publico/recursos/imagenes/productos/' . $nombreImagen;
+                } catch (RuntimeException $e) {
                     $_SESSION['error'] = "Error al subir la imagen.";
                     header('Location: /Tienda_ropa/publico/index.php?accion=editar_producto&id=' . $id);
                     exit();

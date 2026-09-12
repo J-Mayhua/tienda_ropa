@@ -1,5 +1,10 @@
 <?php
 // aplicacion/modelos/ModeloCarrito.php
+
+namespace Tienda\Modelos;
+
+use Exception;
+
 class ModeloCarrito {
     public function __construct() {
         // Inicializar el carrito en la sesión si no existe

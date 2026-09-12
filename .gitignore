@@ -15,7 +15,6 @@
 ## Dependencias
 vendor/
 node_modules/
-composer.lock
 package-lock.json
 
 ## Configuración Sensible
@@ -70,7 +69,6 @@ yarn-error.log
 
 ## PHP-specific
 .php-version
-phpunit.xml
 .phpdoc/
 
 ## Archivos temporales

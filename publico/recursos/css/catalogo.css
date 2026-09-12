@@ -1,8 +1,5 @@
 /* CATÁLOGO PREMIUM - ESTILOS COMPLETOS */
 :root {
-    --primary: #6a11cb;
-    --secondary: #2575fc;
-    --accent: #ff4757;
     --dark: #1a1a2e;
     --light: #f8f9fa;
     --text: #2c3e50;
@@ -27,7 +24,7 @@
   
   /* BANNER HERO */
   .hero-banner {
-    background: linear-gradient(135deg, var(--dark), var(--primary));
+    background: linear-gradient(135deg, var(--dark), var(--primary-color));
     color: white;
     text-align: center;
     padding: 80px 15px;
@@ -93,7 +90,7 @@
     animation: fadeIn 0.8s ease-out 0.5s both;
   }
   
-  .category-btn {
+  .boton-categoria {
     padding: 12px 28px;
     border-radius: 30px;
     background: white;
@@ -107,35 +104,35 @@
     overflow: hidden;
   }
   
-  .category-btn::before {
+  .boton-categoria::before {
     content: '';
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
     z-index: -1;
     transform: scaleX(0);
     transform-origin: right;
     transition: transform 0.4s ease;
   }
   
-  .category-btn:hover::before, 
-  .category-btn.active::before {
+  .boton-categoria:hover::before,
+  .boton-categoria.activo::before {
     transform: scaleX(1);
     transform-origin: left;
   }
   
-  .category-btn:hover, 
-  .category-btn.active {
+  .boton-categoria:hover,
+  .boton-categoria.activo {
     color: white;
     transform: translateY(-3px);
     box-shadow: 0 8px 25px rgba(106, 17, 203, 0.3);
   }
   
   /* CONTENEDOR DE PRODUCTOS */
-  .product-grid {
+  .cuadricula-productos {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
     gap: 35px;
@@ -145,7 +142,7 @@
   }
   
   /* TARJETA DE PRODUCTO */
-  .product-card {
+  .tarjeta-producto {
     background: white;
     border-radius: 18px;
     box-shadow: 0 12px 35px rgba(0,0,0,0.08);
@@ -158,7 +155,7 @@
     will-change: transform;
   }
   
-  .product-card:hover {
+  .tarjeta-producto:hover {
     transform: translateY(-12px) scale(1.02);
     box-shadow: 0 20px 50px rgba(0,0,0,0.15);
   }
@@ -170,14 +167,14 @@
     overflow: hidden;
   }
   
-  .product-image {
+  .imagen-producto {
     width: 100%;
     height: 100%;
     object-fit: cover;
     transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   }
   
-  .product-card:hover .product-image {
+  .tarjeta-producto:hover .imagen-producto {
     transform: scale(1.12);
   }
   
@@ -186,7 +183,7 @@
     position: absolute;
     top: 20px;
     right: 20px;
-    background: var(--accent);
+    background: var(--accent-color);
     color: white;
     padding: 6px 16px;
     border-radius: 20px;
@@ -198,7 +195,7 @@
   }
   
   /* BOTONES DE ACCIÓN */
-  .product-actions {
+  .acciones-producto {
     position: absolute;
     bottom: 20px;
     right: 20px;
@@ -210,12 +207,12 @@
     transition: all 0.4s ease;
   }
   
-  .product-card:hover .product-actions {
+  .tarjeta-producto:hover .acciones-producto {
     transform: translateY(0);
     opacity: 1;
   }
   
-  .action-btn {
+  .boton-accion {
     width: 44px;
     height: 44px;
     border-radius: 50%;
@@ -231,23 +228,23 @@
     font-size: 1rem;
   }
   
-  .action-btn:hover {
-    background: var(--primary);
+  .boton-accion:hover {
+    background: var(--primary-color);
     color: white;
     transform: scale(1.1) rotate(15deg);
   }
   
   /* CONTENIDO DE LA TARJETA */
-  .product-content {
+  .contenido-producto {
     padding: 25px;
     position: relative;
   }
   
-  .product-category {
+  .categoria-producto {
     position: absolute;
     top: -15px;
     left: 25px;
-    background: var(--secondary);
+    background: var(--secondary-color);
     color: white;
     padding: 6px 18px;
     border-radius: 20px;
@@ -258,7 +255,7 @@
     box-shadow: 0 4px 12px rgba(37, 117, 252, 0.3);
   }
   
-  .product-title {
+  .titulo-producto {
     font-size: 1.4rem;
     margin: 20px 0 12px;
     color: var(--text);
@@ -267,11 +264,11 @@
     transition: color 0.3s ease;
   }
   
-  .product-card:hover .product-title {
-    color: var(--primary);
+  .tarjeta-producto:hover .titulo-producto {
+    color: var(--primary-color);
   }
   
-  .product-description {
+  .descripcion-producto {
     font-size: 0.95rem;
     color: var(--gray);
     margin: 0 0 20px;
@@ -283,31 +280,31 @@
   }
   
   /* INFORMACIÓN DE PRECIO */
-  .product-price {
+  .precio-producto {
     display: flex;
     align-items: center;
     gap: 12px;
     margin-bottom: 25px;
   }
   
-  .current-price {
+  .precio-actual {
     font-size: 1.5rem;
     font-weight: 800;
-    color: var(--primary);
+    color: var(--primary-color);
   }
   
-  .original-price {
+  .precio-original {
     font-size: 1.1rem;
     color: var(--gray);
     text-decoration: line-through;
   }
   
   /* BOTÓN AÑADIR AL CARRITO */
-  .add-to-cart {
+  .anadir-carrito {
     width: 100%;
     padding: 14px;
     border-radius: 10px;
-    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
     color: white;
     border: none;
     font-weight: 700;
@@ -323,7 +320,7 @@
     position: relative;
   }
   
-  .add-to-cart::before {
+  .anadir-carrito::before {
     content: '';
     position: absolute;
     top: 0;
@@ -334,12 +331,12 @@
     transition: 0.5s;
   }
   
-  .add-to-cart:hover {
+  .anadir-carrito:hover {
     transform: translateY(-3px);
     box-shadow: 0 10px 25px rgba(106, 17, 203, 0.4);
   }
   
-  .add-to-cart:hover::before {
+  .anadir-carrito:hover::before {
     left: 100%;
   }
   
@@ -391,7 +388,7 @@
   
   /* RESPONSIVE DESIGN */
   @media (max-width: 1200px) {
-    .product-grid {
+    .cuadricula-productos {
       grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
       gap: 25px;
     }
@@ -421,7 +418,7 @@
       font-size: 1.1rem;
     }
     
-    .product-grid {
+    .cuadricula-productos {
       grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
       gap: 20px;
     }
@@ -444,12 +441,12 @@
       gap: 10px;
     }
     
-    .category-btn {
+    .boton-categoria {
       padding: 10px 20px;
       font-size: 0.9rem;
     }
     
-    .product-grid {
+    .cuadricula-productos {
       grid-template-columns: 1fr;
       max-width: 400px;
     }

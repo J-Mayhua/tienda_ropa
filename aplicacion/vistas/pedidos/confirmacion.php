@@ -2,7 +2,7 @@
 <?php include '../plantillas/cabecera.php'; ?>
 
 <h1>Confirmación de Compra</h1>
-<p>Gracias por tu compra. Tu pedido ha sido registrado con el número: <strong>#<?php echo $pedido_id; ?></strong></p>
+<p>Gracias por tu compra. Tu pedido ha sido registrado con el número: <strong>#<?php echo htmlspecialchars($pedido_id, ENT_QUOTES, 'UTF-8'); ?></strong></p>
 
 <h2>Detalles del Pedido</h2>
 <table border="1">
@@ -14,15 +14,15 @@
     </tr>
     <?php foreach ($detalles as $detalle): ?>
     <tr>
-        <td><?php echo $detalle['nombre']; ?></td>
-        <td><?php echo $detalle['cantidad']; ?></td>
-        <td>$<?php echo $detalle['precio_unitario']; ?></td>
-        <td>$<?php echo $detalle['cantidad'] * $detalle['precio_unitario']; ?></td>
+        <td><?php echo htmlspecialchars($detalle['nombre'], ENT_QUOTES, 'UTF-8'); ?></td>
+        <td><?php echo htmlspecialchars($detalle['cantidad'], ENT_QUOTES, 'UTF-8'); ?></td>
+        <td>$<?php echo htmlspecialchars($detalle['precio_unitario'], ENT_QUOTES, 'UTF-8'); ?></td>
+        <td>$<?php echo htmlspecialchars($detalle['cantidad'] * $detalle['precio_unitario'], ENT_QUOTES, 'UTF-8'); ?></td>
     </tr>
     <?php endforeach; ?>
     <tr>
         <td colspan="3"><strong>Total</strong></td>
-        <td><strong>$<?php echo $total; ?></strong></td>
+        <td><strong>$<?php echo htmlspecialchars($total, ENT_QUOTES, 'UTF-8'); ?></strong></td>
     </tr>
 </table>
 

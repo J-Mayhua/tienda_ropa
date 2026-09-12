@@ -2,11 +2,9 @@
 <?php require_once __DIR__ . '/../plantillas/cabecera.php'; ?>
 
 <h1>Pago con Yape</h1>
-<p>Total a pagar: S/ <?php echo number_format($_SESSION['total_pedido'], 2); ?></p>
+<p>Total a pagar: S/ <?php echo htmlspecialchars(number_format($_SESSION['total_pedido'], 2), ENT_QUOTES, 'UTF-8'); ?></p>
 
-<?php if (isset($_SESSION['error_pago'])): ?>
-    <div class="error"><?php echo $_SESSION['error_pago']; unset($_SESSION['error_pago']); ?></div>
-<?php endif; ?>
+<?php require __DIR__ . '/../plantillas/mensajes.php'; ?>
 
 <!-- Mostrar número de Yape o código QR -->
 <div class="info-pago">
@@ -18,6 +16,7 @@
 
 <!-- Formulario para subir comprobante -->
 <form action="/Tienda_ropa/publico/index.php?accion=procesar_pago_yape" method="post" enctype="multipart/form-data">
+    <?php echo csrf_field(); ?>
     <label for="comprobante">Subir comprobante de pago:</label>
     <input type="file" id="comprobante" name="comprobante" accept="image/*" required>
 

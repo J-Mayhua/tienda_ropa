@@ -1,15 +1,8 @@
 <?php
+require_once __DIR__ . '/../../../configuracion/config.php';
+
 // Verificar el estado de la sesión
 if (session_status() !== PHP_SESSION_ACTIVE) {
-    // Configurar el nombre de la sesión basado en las cookies
-    if (isset($_COOKIE['admin_session'])) {
-        session_name('admin_session');
-    } elseif (isset($_COOKIE['cliente_session'])) {
-        session_name('cliente_session');
-    } else {
-        session_name('default_session');
-    }
-    // Iniciar la sesión
     session_start();
 }
 

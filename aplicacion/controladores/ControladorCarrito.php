@@ -1,10 +1,11 @@
 <?php
 // aplicacion/controladores/ControladorCarrito.php
-if (session_status() == PHP_SESSION_NONE) {
-    session_start();
-}
+
+namespace Tienda\Controladores;
 
 require_once __DIR__ . '/../../configuracion/config.php';
+
+use Tienda\Modelos\ModeloProductos;
 
 class ControladorCarrito {
     private $db;
@@ -16,6 +17,13 @@ class ControladorCarrito {
 
     // Añadir un producto al carrito
     public function añadirAlCarrito($id) {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            http_response_code(405);
+            exit('Método no permitido.');
+        }
+
+        verificar_csrf();
+
         // Verificar si el usuario ha iniciado sesión
         if (!isset($_SESSION['usuario_id'])) {
             header('Location: /Tienda_ropa/publico/index.php?accion=iniciar_sesion');
@@ -50,7 +58,6 @@ class ControladorCarrito {
         $carrito = $_SESSION['carrito'];
 
         // Incluir el modelo de productos
-        require_once __DIR__ . '/../modelos/ModeloProductos.php';
         $modeloProducto = new ModeloProductos();
 
         // Obtener los detalles de los productos en el carrito
@@ -74,6 +81,13 @@ class ControladorCarrito {
 
     // Eliminar un producto del carrito
     public function eliminarDelCarrito($id) {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            http_response_code(405);
+            exit('Método no permitido.');
+        }
+
+        verificar_csrf();
+
         // Verificar si el producto existe en el carrito
         if (isset($_SESSION['carrito'][$id])) {
             // Si la cantidad es mayor a 1, decrementar
@@ -92,6 +106,13 @@ class ControladorCarrito {
 
     // Vaciar el carrito
     public function vaciarCarrito() {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            http_response_code(405);
+            exit('Método no permitido.');
+        }
+
+        verificar_csrf();
+
         $_SESSION['carrito'] = [];
         header('Location: /Tienda_ropa/publico/index.php?accion=ver_carrito');
         exit;
@@ -106,7 +127,6 @@ class ControladorCarrito {
         }
     
         // Incluir el modelo de productos
-        require_once __DIR__ . '/../modelos/ModeloProductos.php';
         $modeloProducto = new ModeloProductos();
     
         // Calcular el total del pedido
@@ -129,7 +149,6 @@ class ControladorCarrito {
     // Método para crear pedido (he movido este código que estaba fuera de la clase)
     public function crearPedido() {
         // Incluir el modelo de productos
-        require_once __DIR__ . '/../modelos/ModeloProductos.php';
         $modeloProducto = new ModeloProductos();
     
         // Crear el pedido
@@ -185,6 +204,8 @@ class ControladorCarrito {
 
     // Método para procesar las solicitudes
     public function procesarSolicitud() {
+        verificar_csrf();
+
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if (isset($_POST['accion']) && $_POST['accion'] === 'añadir' && isset($_POST['id_producto'])) {
                 $this->añadirAlCarrito($_POST['id_producto']);
@@ -202,7 +223,3 @@ class ControladorCarrito {
         }
     }
 }
-
-// Código fuera de la clase para procesar la solicitud
-$controlador = new ControladorCarrito();
-$controlador->procesarSolicitud();

@@ -5,6 +5,7 @@ require_once __DIR__ . '/../../plantillas/cabecera.php';
 
 <div class="contenedor">
     <h2>Lista de Usuarios</h2>
+    <div class="tabla-responsive">
     <table class="tabla">
         <thead>
             <tr>
@@ -18,18 +19,19 @@ require_once __DIR__ . '/../../plantillas/cabecera.php';
         <tbody>
             <?php foreach ($usuarios as $usuario): ?>
             <tr>
-                <td><?php echo $usuario['id']; ?></td>
-                <td><?php echo $usuario['nombre']; ?></td>
-                <td><?php echo $usuario['email']; ?></td>
-                <td><?php echo $usuario['rol']; ?></td>
+                <td><?php echo htmlspecialchars($usuario['id'], ENT_QUOTES, 'UTF-8'); ?></td>
+                <td><?php echo htmlspecialchars($usuario['nombre'], ENT_QUOTES, 'UTF-8'); ?></td>
+                <td><?php echo htmlspecialchars($usuario['email'], ENT_QUOTES, 'UTF-8'); ?></td>
+                <td><?php echo htmlspecialchars($usuario['rol'], ENT_QUOTES, 'UTF-8'); ?></td>
                 <td>
-                    <a href="/Tienda_ropa/publico/index.php?accion=editar_usuario&id=<?php echo $usuario['id']; ?>" class="btn">Editar</a>
-                    <a href="/Tienda_ropa/publico/index.php?accion=eliminar_usuario&id=<?php echo $usuario['id']; ?>" class="btn btn-eliminar">Eliminar</a>
+                    <a href="/Tienda_ropa/publico/index.php?accion=editar_usuario&id=<?php echo htmlspecialchars($usuario['id'], ENT_QUOTES, 'UTF-8'); ?>" class="btn">Editar</a>
+                    <a href="/Tienda_ropa/publico/index.php?accion=eliminar_usuario&id=<?php echo htmlspecialchars($usuario['id'], ENT_QUOTES, 'UTF-8'); ?>" class="btn btn-peligro">Eliminar</a>
                 </td>
             </tr>
             <?php endforeach; ?>
         </tbody>
     </table>
+    </div>
 </div>
 
 <?php

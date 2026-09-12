@@ -1,12 +1,10 @@
 <?php
 // aplicacion/vistas/productos/catalogo.php
 
-if (session_status() == PHP_SESSION_NONE) {
-    session_start();
-}
-
+require_once __DIR__ . '/../../configuracion/config.php';
 require_once __DIR__ . '/../plantillas/cabecera.php';
-require_once __DIR__ . '/../../modelos/ModeloProductos.php';
+
+use Tienda\Modelos\ModeloProductos;
 
 $modelo = new ModeloProductos();
 $productos = $modelo->obtenerProductos();
@@ -26,47 +24,49 @@ $productos = $modelo->obtenerProductos();
 
 <!-- Filtros -->
 <div class="category-filters">
-    <button class="category-btn active">Todos</button>
-    <button class="category-btn">Hombre</button>
-    <button class="category-btn">Mujer</button>
-    <button class="category-btn">Niños</button>
+    <button class="boton-categoria activo">Todos</button>
+    <button class="boton-categoria">Hombre</button>
+    <button class="boton-categoria">Mujer</button>
+    <button class="boton-categoria">Niños</button>
 </div>
 
 <!-- Productos -->
-<div class="product-grid">
+<div class="cuadricula-productos">
     <?php foreach ($productos as $producto): ?>
-        <div class="product-card">
+        <div class="tarjeta-producto">
             <?php if ($producto['descuento'] > 0): ?>
-                <span class="product-badge">-<?= $producto['descuento'] ?>% OFF</span>
+                <span class="insignia-producto">-<?php echo htmlspecialchars($producto['descuento'], ENT_QUOTES, 'UTF-8'); ?>% OFF</span>
             <?php endif; ?>
             
             <div class="product-media">
-                <img src="<?= $producto['imagen'] ?>" alt="<?= $producto['nombre'] ?>" class="product-image">
+                <img src="<?php echo htmlspecialchars($producto['imagen'], ENT_QUOTES, 'UTF-8'); ?>" alt="Imagen de <?php echo htmlspecialchars($producto['nombre'], ENT_QUOTES, 'UTF-8'); ?>" class="imagen-producto">
                 
-                <div class="product-actions">
-                    <button class="action-btn" title="Favoritos"><i class="fas fa-heart"></i></button>
-                    <button class="action-btn" title="Vista rápida"><i class="fas fa-eye"></i></button>
+                <div class="acciones-producto">
+                    <button class="boton-accion" title="Favoritos"><i class="fas fa-heart"></i></button>
+                    <button class="boton-accion" title="Vista rápida"><i class="fas fa-eye"></i></button>
                 </div>
             </div>
             
-            <div class="product-content">
-                <span class="product-category"><?= $producto['categoria'] ?></span>
-                <h3 class="product-title"><?= $producto['nombre'] ?></h3>
-                <p class="product-description"><?= $producto['descripcion'] ?></p>
+            <div class="contenido-producto">
+                <span class="categoria-producto"><?php echo htmlspecialchars($producto['categoria'], ENT_QUOTES, 'UTF-8'); ?></span>
+                <h3 class="titulo-producto"><?php echo htmlspecialchars($producto['nombre'], ENT_QUOTES, 'UTF-8'); ?></h3>
+                <p class="descripcion-producto"><?php echo htmlspecialchars($producto['descripcion'], ENT_QUOTES, 'UTF-8'); ?></p>
                 
-                <div class="product-price">
+                <div class="precio-producto">
                     <?php if ($producto['descuento'] > 0): ?>
-                        <span class="current-price">$<?= number_format($producto['precio'] * (1 - $producto['descuento']/100), 2) ?></span>
-                        <span class="original-price">$<?= number_format($producto['precio'], 2) ?></span>
+                        <span class="precio-actual">$<?php echo htmlspecialchars(number_format($producto['precio'] * (1 - $producto['descuento'] / 100), 2), ENT_QUOTES, 'UTF-8'); ?></span>
+                        <span class="precio-original">$<?php echo htmlspecialchars(number_format($producto['precio'], 2), ENT_QUOTES, 'UTF-8'); ?></span>
                     <?php else: ?>
-                        <span class="current-price">$<?= number_format($producto['precio'], 2) ?></span>
+                        <span class="precio-actual">$<?php echo htmlspecialchars(number_format($producto['precio'], 2), ENT_QUOTES, 'UTF-8'); ?></span>
                     <?php endif; ?>
                 </div>
                 
-                <form method="POST" action="/Tienda_ropa/aplicacion/controladores/ControladorCarrito.php">
-                    <input type="hidden" name="id_producto" value="<?= $producto['id'] ?>">
+                <form method="POST" action="/Tienda_ropa/publico/index.php?accion=añadir_al_carrito">
+                    <?= csrf_field() ?>
+                    <input type="hidden" name="id_producto" value="<?php echo htmlspecialchars($producto['id'], ENT_QUOTES, 'UTF-8'); ?>">
+                    <input type="hidden" name="id" value="<?php echo htmlspecialchars($producto['id'], ENT_QUOTES, 'UTF-8'); ?>">
                     <input type="hidden" name="accion" value="añadir">
-                    <button type="submit" class="add-to-cart">
+                    <button type="submit" class="anadir-carrito">
                         <i class="fas fa-shopping-cart"></i> Añadir al carrito
                     </button>
                 </form>

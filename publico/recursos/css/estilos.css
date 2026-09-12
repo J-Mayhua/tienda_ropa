@@ -1,12 +1,4 @@
-/* ESTILOS UNIFICADOS */
-:root {
-    --primary-color: #6a11cb;
-    --secondary-color: #2575fc;
-    --dark-color: #1a1a2e;
-    --light-color: #f8f9fa;
-    --accent-color: #ff4757;
-}
-
+/* Convencion: clases en espanol y kebab-case. */
 /* CABECERA CON EFECTOS ESPECIALES */
 /* ESTILOS COMPLETOS PARA CABECERA - TIENDA DE ROPA */
 :root {
@@ -255,3 +247,74 @@
       font-size: 0.9rem;
     }
   }
+
+/* Componentes reutilizables */
+.btn {
+    display: inline-block;
+    padding: 10px 16px;
+    border: none;
+    border-radius: 5px;
+    background-color: var(--primary-color);
+    color: #ffffff;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.btn:hover {
+    background-color: var(--secondary-color);
+    color: #ffffff;
+    transform: translateY(-1px);
+}
+
+.btn-secundario {
+    background-color: #6c757d;
+}
+
+.btn-secundario:hover {
+    background-color: #5a6268;
+}
+
+.btn-peligro {
+    background-color: var(--accent-color);
+}
+
+.btn-peligro:hover {
+    background-color: #cc0000;
+}
+
+.btn-cancelar {
+    background-color: #6c757d;
+}
+
+.btn-cancelar:hover {
+    background-color: #5a6268;
+}
+
+.alerta {
+    margin-bottom: 20px;
+    padding: 12px;
+    border-radius: 8px;
+}
+
+.alerta-error {
+    background-color: #ffebee;
+    border: 1px solid #ffcdd2;
+    color: #c62828;
+}
+
+.alerta-exito {
+    background-color: #e8f5e9;
+    border: 1px solid #c8e6c9;
+    color: #2e7d32;
+}
+
+.tabla-responsive {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.tabla-responsive .tabla,
+.tabla-responsive .tabla-productos {
+    min-width: 600px;
+}

@@ -1,5 +1,5 @@
 /* Contenedor del formulario de inicio de sesión */
-.login-container {
+.contenedor-inicio-sesion {
     max-width: 400px;
     margin: 80px auto;
     padding: 40px;
@@ -11,7 +11,7 @@
 }
 
 /* Título */
-.login-container h1 {
+.contenedor-inicio-sesion h1 {
     font-size: 28px;
     color: #2c3e50;
     margin-bottom: 25px;
@@ -19,29 +19,8 @@
     letter-spacing: -0.5px;
 }
 
-/* Mensajes de error y éxito */
-.error-message {
-    background: #ffebee;
-    color: #c62828;
-    padding: 12px;
-    border-radius: 8px;
-    margin-bottom: 20px;
-    font-size: 14px;
-    border: 1px solid #ffcdd2;
-}
-
-.success-message {
-    background: #e8f5e9;
-    color: #2e7d32;
-    padding: 12px;
-    border-radius: 8px;
-    margin-bottom: 20px;
-    font-size: 14px;
-    border: 1px solid #c8e6c9;
-}
-
 /* Estilos para etiquetas */
-.login-container label {
+.contenedor-inicio-sesion label {
     display: block;
     font-size: 14px;
     margin: 15px 0 8px;
@@ -51,7 +30,7 @@
 }
 
 /* Estilos para los campos de entrada */
-.login-container input {
+.contenedor-inicio-sesion input {
     width: 100%;
     padding: 12px;
     font-size: 14px;
@@ -62,13 +41,13 @@
     background-color: #f9f9f9;
 }
 
-.login-container input:focus {
+.contenedor-inicio-sesion input:focus {
     border-color: #21cb11;
     box-shadow: 0 0 8px rgba(106, 17, 203, 0.2);
 }
 
 /* Botón de envío */
-.login-container button {
+.contenedor-inicio-sesion button {
     width: 100%;
     padding: 14px;
     font-size: 16px;
@@ -82,30 +61,30 @@
     margin-top: 20px;
 }
 
-.login-container button:hover {
+.contenedor-inicio-sesion button:hover {
     background: #2575fc;
     transform: translateY(-2px);
 }
 
-.login-container button:active {
+.contenedor-inicio-sesion button:active {
     transform: translateY(0);
 }
 
 /* Enlace de registro */
-.login-container p {
+.contenedor-inicio-sesion p {
     margin-top: 20px;
     font-size: 14px;
     color: #555;
 }
 
-.login-container a {
+.contenedor-inicio-sesion a {
     color: #6a11cb;
     font-weight: 600;
     text-decoration: none;
     transition: color 0.3s ease;
 }
 
-.login-container a:hover {
+.contenedor-inicio-sesion a:hover {
     color: #2575fc;
     text-decoration: underline;
 }

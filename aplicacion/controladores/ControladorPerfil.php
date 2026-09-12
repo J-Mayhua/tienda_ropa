@@ -1,10 +1,11 @@
 <?php
 // aplicacion/controladores/ControladorPerfil.php
-if (session_status() == PHP_SESSION_NONE) {
-    session_start();
-}
+
+namespace Tienda\Controladores;
 
 require_once __DIR__ . '/../../configuracion/config.php';
+
+use Tienda\Modelos\ModeloUsuarios;
 
 class ControladorPerfil {
     private $db;
@@ -26,7 +27,6 @@ class ControladorPerfil {
         $usuarioId = $_SESSION['usuario_id'];
 
         // Incluir el modelo de usuarios
-        require_once __DIR__ . '/../modelos/ModeloUsuarios.php';
         $modeloUsuarios = new ModeloUsuarios();
 
         // Obtener los datos del usuario
@@ -48,7 +48,6 @@ class ControladorPerfil {
         $usuarioId = $_SESSION['usuario_id'];
 
         // Incluir el modelo de usuarios
-        require_once __DIR__ . '/../modelos/ModeloUsuarios.php';
         $modeloUsuarios = new ModeloUsuarios();
 
         // Obtener los datos del usuario
@@ -77,7 +76,6 @@ class ControladorPerfil {
         }
 
         // Incluir el modelo de usuarios
-        require_once __DIR__ . '/../modelos/ModeloUsuarios.php';
         $modeloUsuarios = new ModeloUsuarios();
 
         // Actualizar los datos del usuario

@@ -4,17 +4,11 @@
 
 <h1>Mi Perfil</h1>
 
-<?php if (isset($_SESSION['exito'])): ?>
-    <div class="exito"><?php echo $_SESSION['exito']; unset($_SESSION['exito']); ?></div>
-<?php endif; ?>
-
-<?php if (isset($_SESSION['error'])): ?>
-    <div class="error"><?php echo $_SESSION['error']; unset($_SESSION['error']); ?></div>
-<?php endif; ?>
+<?php require __DIR__ . '/../plantillas/mensajes.php'; ?>
 
 <?php if (isset($usuario)): ?>
-    <p><strong>Nombre:</strong> <?php echo htmlspecialchars($usuario['nombre']); ?></p>
-    <p><strong>Email:</strong> <?php echo htmlspecialchars($usuario['email']); ?></p>
+    <p><strong>Nombre:</strong> <?php echo htmlspecialchars($usuario['nombre'], ENT_QUOTES, 'UTF-8'); ?></p>
+    <p><strong>Email:</strong> <?php echo htmlspecialchars($usuario['email'], ENT_QUOTES, 'UTF-8'); ?></p>
 
     <a href="/Tienda_ropa/publico/index.php?accion=editar_perfil">Editar Perfil</a>
 <?php else: ?>

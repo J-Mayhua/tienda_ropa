@@ -39,35 +39,7 @@
     flex-grow: 1;
 }
 
-.btn-eliminar {
-    background-color: #ff4d4d;
-    color: white;
-    padding: 8px 12px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    text-decoration: none;
-}
-
-.btn-eliminar:hover {
-    background-color: #cc0000;
-}
-
 .total-carrito {
     text-align: right;
     margin-top: 20px;
-}
-
-.btn-finalizar-compra {
-    background-color: #4CAF50;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    text-decoration: none;
-}
-
-.btn-finalizar-compra:hover {
-    background-color: #45a049;
 }

@@ -1,11 +1,24 @@
 <?php
 // aplicacion/modelos/ModeloUsuarios.php
+
+namespace Tienda\Modelos;
+
 require_once __DIR__ . '/../../configuracion/config.php';
+
+use Tienda\Soporte\Logger;
+use Tienda\Soporte\Validador;
+use PDO;
+use PDOException;
 
 class ModeloUsuarios {
     private $db;
 
-    public function __construct() {
+    public function __construct(?PDO $conexion = null) {
+        if ($conexion !== null) {
+            $this->db = $conexion;
+            return;
+        }
+
         global $db; // Usar la conexión global
         $this->db = $db;
     }
@@ -20,19 +33,28 @@ class ModeloUsuarios {
      * @return bool True si se registró correctamente, false en caso contrario.
      */
     public function registrar($nombre, $email, $contrasena, $rol = 'cliente') {
+        if (!Validador::requeridos(
+                compact('nombre', 'email', 'contrasena', 'rol'),
+                ['nombre', 'email', 'contrasena', 'rol']
+            )
+            || !Validador::email($email)
+            || !Validador::password($contrasena)) {
+            return false;
+        }
+
         try {
             // Verificar si el email ya está registrado
             $query = "SELECT id FROM usuarios WHERE email = :email";
             $stmt = $this->db->prepare($query);
             $stmt->execute([':email' => $email]);
             if ($stmt->fetch(PDO::FETCH_ASSOC)) {
-                error_log("Email ya registrado: " . $email);
+                Logger::obtener()->warning('Email ya registrado', ['email' => $email]);
                 return false; // Email ya registrado
             }
 
             // Hash de la contraseña
             $contrasenaHash = password_hash($contrasena, PASSWORD_DEFAULT);
-            error_log("Contraseña hasheada creada para: " . $email);
+            Logger::obtener()->info('Hash de contraseña creado', ['email' => $email]);
 
             // Insertar el nuevo usuario
             $query = "INSERT INTO usuarios (nombre, email, password, rol) VALUES (:nombre, :email, :contrasena, :rol)";
@@ -40,13 +62,13 @@ class ModeloUsuarios {
             $stmt->execute([
                 ':nombre' => $nombre,
                 ':email' => $email,
-                ':password' => $contrasenaHash,
+                ':contrasena' => $contrasenaHash,
                 ':rol' => $rol
             ]);
-            error_log("Usuario registrado correctamente: " . $email);
+            Logger::obtener()->info('Usuario registrado', ['email' => $email]);
             return true;
         } catch (PDOException $e) {
-            error_log("Error al registrar usuario: " . $e->getMessage());
+            Logger::obtener()->error('Error al registrar usuario', ['exception' => $e]);
             throw $e; // Relanzar la excepción para ser capturada por el controlador
         }
     }
@@ -60,7 +82,7 @@ class ModeloUsuarios {
      */
     public function iniciarSesion($email, $contrasena) {
         try {
-            error_log("Intento de inicio de sesión para: " . $email);
+            Logger::obtener()->info('Intento de inicio de sesión', ['email' => $email]);
             
             $query = "SELECT * FROM usuarios WHERE email = :email";
             $stmt = $this->db->prepare($query);
@@ -68,24 +90,22 @@ class ModeloUsuarios {
             $usuario = $stmt->fetch(PDO::FETCH_ASSOC);
 
             if (!$usuario) {
-                error_log("Usuario no encontrado: " . $email);
+                Logger::obtener()->warning('Usuario no encontrado', ['email' => $email]);
                 return false;
             }
 
-            error_log("Usuario encontrado, verificando contraseña para: " . $email);
+            Logger::obtener()->info('Usuario encontrado', ['email' => $email]);
             
             // Para depuración, verificar el hash almacenado
-            error_log("Hash almacenado: " . substr($usuario['contrasena'], 0, 20) . "...");
-            
             if (password_verify($contrasena, $usuario['password'])) {
-                error_log("Contraseña verificada correctamente para: " . $email);
+                Logger::obtener()->info('Contraseña verificada', ['email' => $email]);
                 return $usuario;
             } else {
-                error_log("Contraseña incorrecta para: " . $email);
+                Logger::obtener()->warning('Contraseña incorrecta', ['email' => $email]);
                 return false;
             }
         } catch (PDOException $e) {
-            error_log("Error en la base de datos al iniciar sesión: " . $e->getMessage());
+            Logger::obtener()->error('Error de base de datos en inicio de sesión', ['exception' => $e]);
             throw $e; // Relanzar la excepción para ser capturada por el controlador
         }
     }
@@ -102,7 +122,7 @@ class ModeloUsuarios {
             $stmt->execute();
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
-            error_log("Error al obtener usuarios: " . $e->getMessage());
+            Logger::obtener()->error('Error al obtener usuarios', ['exception' => $e]);
             return [];
         }
     }
@@ -120,7 +140,7 @@ class ModeloUsuarios {
             $stmt->execute([':id' => $id]);
             return $stmt->fetch(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
-            error_log("Error al obtener usuario por ID: " . $e->getMessage());
+            Logger::obtener()->error('Error al obtener usuario por ID', ['exception' => $e]);
             return false;
         }
     }
@@ -146,7 +166,7 @@ class ModeloUsuarios {
             ]);
             return true;
         } catch (PDOException $e) {
-            error_log("Error al actualizar usuario: " . $e->getMessage());
+            Logger::obtener()->error('Error al actualizar usuario', ['exception' => $e]);
             return false;
         }
     }
@@ -164,7 +184,7 @@ class ModeloUsuarios {
             $stmt->execute([':id' => $id]);
             return true;
         } catch (PDOException $e) {
-            error_log("Error al eliminar usuario: " . $e->getMessage());
+            Logger::obtener()->error('Error al eliminar usuario', ['exception' => $e]);
             return false;
         }
     }
@@ -182,7 +202,7 @@ class ModeloUsuarios {
             $resultado = $stmt->fetch(PDO::FETCH_ASSOC);
             return $resultado['total'];
         } catch (PDOException $e) {
-            error_log("Error al contar usuarios: " . $e->getMessage());
+            Logger::obtener()->error('Error al contar usuarios', ['exception' => $e]);
             return 0;
         }
     }

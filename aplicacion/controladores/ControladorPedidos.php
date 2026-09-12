@@ -1,10 +1,12 @@
 <?php
 // aplicacion/controladores/ControladorPedidos.php
-if (session_status() == PHP_SESSION_NONE) {
-    session_start();
-}
+
+namespace Tienda\Controladores;
 
 require_once __DIR__ . '/../../configuracion/config.php';
+
+use Tienda\Modelos\ModeloPedidos;
+use PDO;
 
 class ControladorPedidos {
     private $db;

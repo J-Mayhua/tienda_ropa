@@ -1,6 +1,9 @@
 <?php
 // aplicacion/controladores/ControladorProductos.php
-require_once __DIR__ . '/../modelos/ModeloProductos.php';
+
+namespace Tienda\Controladores;
+
+use Tienda\Modelos\ModeloProductos;
 
 class ControladorProductos {
     private $modelo;

@@ -1,11 +1,23 @@
 <?php
 // aplicacion/modelos/ModeloPedidos.php
+
+namespace Tienda\Modelos;
+
 require_once __DIR__ . '/../../configuracion/config.php';
+
+use Tienda\Soporte\Logger;
+use PDO;
+use PDOException;
 
 class ModeloPedidos {
     private $db;
 
-    public function __construct() {
+    public function __construct(?PDO $conexion = null) {
+        if ($conexion !== null) {
+            $this->db = $conexion;
+            return;
+        }
+
         global $db; // Usar la conexión global
         $this->db = $db;
     }
@@ -22,7 +34,7 @@ class ModeloPedidos {
             $stmt->execute();
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
-            error_log("Error al obtener pedidos: " . $e->getMessage());
+            Logger::obtener()->error('Error al obtener pedidos', ['exception' => $e]);
             return [];
         }
     }
@@ -40,7 +52,7 @@ class ModeloPedidos {
             $stmt->execute([':usuario_id' => $usuarioId]);
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
-            error_log("Error al obtener pedidos del usuario: " . $e->getMessage());
+            Logger::obtener()->error('Error al obtener pedidos del usuario', ['exception' => $e]);
             return [];
         }
     }
@@ -58,7 +70,7 @@ class ModeloPedidos {
             $stmt->execute([':pedido_id' => $pedidoId]);
             return $stmt->fetch(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
-            error_log("Error al obtener detalles del pedido: " . $e->getMessage());
+            Logger::obtener()->error('Error al obtener detalles del pedido', ['exception' => $e]);
             return false;
         }
     }
@@ -79,7 +91,7 @@ class ModeloPedidos {
             $stmt->execute([':pedido_id' => $pedidoId]);
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
-            error_log("Error al obtener productos del pedido: " . $e->getMessage());
+            Logger::obtener()->error('Error al obtener productos del pedido', ['exception' => $e]);
             return [];
         }
     }
@@ -97,7 +109,7 @@ class ModeloPedidos {
             $resultado = $stmt->fetch(PDO::FETCH_ASSOC);
             return $resultado['total'];
         } catch (PDOException $e) {
-            error_log("Error al contar pedidos: " . $e->getMessage());
+            Logger::obtener()->error('Error al contar pedidos', ['exception' => $e]);
             return 0;
         }
     }
@@ -119,7 +131,7 @@ class ModeloPedidos {
             ]);
             return true;
         } catch (PDOException $e) {
-            error_log("Error al actualizar el estado del pedido: " . $e->getMessage());
+            Logger::obtener()->error('Error al actualizar estado del pedido', ['exception' => $e]);
             return false;
         }
     }

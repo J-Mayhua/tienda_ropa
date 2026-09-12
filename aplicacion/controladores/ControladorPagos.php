@@ -1,15 +1,25 @@
 <?php
 // aplicacion/controladores/ControladorPagos.php
-if (session_status() == PHP_SESSION_NONE) {
-    session_start();
-}
+
+namespace Tienda\Controladores;
 
 require_once __DIR__ . '/../../configuracion/config.php';
+require_once __DIR__ . '/../../configuracion/uploads.php';
+
+use Tienda\Modelos\ModeloProductos;
+use Exception;
+use PDO;
+use RuntimeException;
 
 class ControladorPagos {
     private $db;
 
-    public function __construct() {
+    public function __construct(?PDO $db = null) {
+        if ($db !== null) {
+            $this->db = $db;
+            return;
+        }
+
         global $db;
         $this->db = $db;
     }
@@ -42,26 +52,11 @@ class ControladorPagos {
             exit;
         }
 
-        // Validar el tipo de archivo (solo imágenes)
-        $tiposPermitidos = ['image/jpeg', 'image/png', 'image/gif'];
-        $tipoArchivo = $_FILES['comprobante']['type'];
-        if (!in_array($tipoArchivo, $tiposPermitidos)) {
-            $_SESSION['error_pago'] = "El archivo debe ser una imagen (JPEG, PNG o GIF).";
-            header('Location: /Tienda_ropa/publico/index.php?accion=pago_yape');
-            exit;
-        }
-
         // Asegurarse de que el directorio existe
         $directorioComprobantes = __DIR__ . '/../../comprobantes/';
-        if (!file_exists($directorioComprobantes)) {
-            mkdir($directorioComprobantes, 0755, true);
-        }
-
-        // Guardar el comprobante en el servidor
-        $nombreArchivo = uniqid() . '_' . basename($_FILES['comprobante']['name']);
-        $rutaComprobante = $directorioComprobantes . $nombreArchivo;
-        
-        if (!move_uploaded_file($_FILES['comprobante']['tmp_name'], $rutaComprobante)) {
+        try {
+            $nombreArchivo = guardar_imagen_subida($_FILES['comprobante'], $directorioComprobantes);
+        } catch (RuntimeException $e) {
             $_SESSION['error_pago'] = "Hubo un error al subir el comprobante.";
             header('Location: /Tienda_ropa/publico/index.php?accion=pago_yape');
             exit;
@@ -92,15 +87,41 @@ class ControladorPagos {
             // Iniciar transacción
             $this->db->beginTransaction();
             
-            // Incluir el modelo de productos
-            require_once __DIR__ . '/../modelos/ModeloProductos.php';
-            $modeloProducto = new ModeloProductos();
-
             // Datos del pedido
             $usuarioId = $_SESSION['usuario_id'];
             $fecha = date('Y-m-d H:i:s');
             $estado = 'pendiente'; // Cambiar a 'pagado' después de validar el comprobante
-            $total = $_SESSION['total_pedido'];
+            $total = 0;
+            $productos = [];
+
+            // Bloquear cada producto en esta misma transacción para evitar sobreventa.
+            foreach ($_SESSION['carrito'] as $productoId => $cantidad) {
+                $cantidad = filter_var($cantidad, FILTER_VALIDATE_INT, [
+                    'options' => ['min_range' => 1]
+                ]);
+                if ($cantidad === false) {
+                    throw new Exception("La cantidad del producto no es válida.");
+                }
+
+                $query = "SELECT id, precio, stock
+                          FROM productos
+                          WHERE id = :producto_id
+                          FOR UPDATE";
+                $stmt = $this->db->prepare($query);
+                $stmt->execute([':producto_id' => $productoId]);
+                $producto = $stmt->fetch(PDO::FETCH_ASSOC);
+
+                if (!$producto || (int) $producto['stock'] < $cantidad) {
+                    throw new Exception("Stock insuficiente para uno de los productos.");
+                }
+
+                $productos[] = [
+                    'id' => $producto['id'],
+                    'cantidad' => $cantidad,
+                    'precio' => (float) $producto['precio']
+                ];
+                $total += (float) $producto['precio'] * $cantidad;
+            }
 
             // Insertar pedido
             $query = "INSERT INTO pedidos (usuario_id, fecha, total, estado, comprobante) VALUES (:usuario_id, :fecha, :total, :estado, :comprobante)";
@@ -114,20 +135,32 @@ class ControladorPagos {
             ]);
             $pedidoId = $this->db->lastInsertId();
 
-            // Crear detalles del pedido
-            foreach ($_SESSION['carrito'] as $productoId => $cantidad) {
-                $producto = $modeloProducto->obtenerPorId($productoId);
-                if ($producto) {
-                    $precioUnitario = $producto['precio'];
-                    $query = "INSERT INTO detalles_pedido (pedido_id, producto_id, cantidad, precio_unitario) VALUES (:pedido_id, :producto_id, :cantidad, :precio_unitario)";
-                    $stmt = $this->db->prepare($query);
-                    $stmt->execute([
-                        ':pedido_id' => $pedidoId,
-                        ':producto_id' => $productoId,
-                        ':cantidad' => $cantidad,
-                        ':precio_unitario' => $precioUnitario
-                    ]);
+            // Descontar stock y crear detalles mientras las filas siguen bloqueadas.
+            foreach ($productos as $producto) {
+                $query = "UPDATE productos
+                          SET stock = stock - :cantidad
+                          WHERE id = :producto_id
+                            AND stock >= :cantidad";
+                $stmt = $this->db->prepare($query);
+                $stmt->execute([
+                    ':producto_id' => $producto['id'],
+                    ':cantidad' => $producto['cantidad']
+                ]);
+
+                if ($stmt->rowCount() !== 1) {
+                    throw new Exception("No se pudo actualizar el stock del producto.");
                 }
+
+                $query = "INSERT INTO detalles_pedido
+                          (pedido_id, producto_id, cantidad, precio_unitario)
+                          VALUES (:pedido_id, :producto_id, :cantidad, :precio_unitario)";
+                $stmt = $this->db->prepare($query);
+                $stmt->execute([
+                    ':pedido_id' => $pedidoId,
+                    ':producto_id' => $producto['id'],
+                    ':cantidad' => $producto['cantidad'],
+                    ':precio_unitario' => $producto['precio']
+                ]);
             }
 
             // Confirmar transacción

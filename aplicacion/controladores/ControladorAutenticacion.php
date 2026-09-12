@@ -1,13 +1,18 @@
 <?php
 // aplicacion/controladores/ControladorAutenticacion.php
 
-if (session_status() == PHP_SESSION_NONE) {
-    session_start(); // Iniciar sesión si no está iniciada
-}
+namespace Tienda\Controladores;
 
-require_once __DIR__ . '/../modelos/ModeloUsuarios.php';
+require_once __DIR__ . '/../../configuracion/config.php';
+
+use Tienda\Modelos\ModeloUsuarios;
+use Tienda\Soporte\Validador;
+use PDOException;
 
 class ControladorAutenticacion {
+    private const MAX_INTENTOS_LOGIN = 5;
+    private const VENTANA_LOGIN_SEGUNDOS = 900;
+
     private $modelo;
 
     // Constructor: inicializa el modelo
@@ -19,8 +24,13 @@ class ControladorAutenticacion {
     public function registrarAdmin() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $nombre = $_POST['nombre'];
-            $email = $_POST['email'];
+            $email = trim((string) ($_POST['email'] ?? ''));
             $password = $_POST['password'];
+            if (!Validador::email($email) || !Validador::password($password)) {
+                $_SESSION['error'] = "Email o contraseña no válidos.";
+                header('Location: /Tienda_ropa/publico/index.php?accion=iniciar_sesion');
+                exit;
+            }
             $rol = $_POST['rol'];
 
             try {
@@ -48,13 +58,27 @@ class ControladorAutenticacion {
         $error_previo = isset($_SESSION['error']) ? $_SESSION['error'] : null;
         
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $email = $_POST['email'];
+            $email = trim((string) ($_POST['email'] ?? ''));
             $password = $_POST['password'];
+            if (!Validador::email($email) || !Validador::password($password)) {
+                $_SESSION['error'] = "Email o contraseña no válidos.";
+                require_once __DIR__ . '/../vistas/usuarios/registrarse.php';
+                return;
+            }
+            $claveIntento = $this->obtenerClaveIntento($email);
+
+            if ($this->loginEstaLimitado($claveIntento)) {
+                $_SESSION['error'] = "Demasiados intentos. Intenta nuevamente más tarde.";
+                header('Location: /Tienda_ropa/publico/index.php?accion=iniciar_sesion');
+                exit;
+            }
             
             try {
                 $usuario = $this->modelo->iniciarSesion($email, $password);
                 
                 if ($usuario) {
+                    unset($_SESSION['intentos_login'][$claveIntento]);
+
                     // Almacenar datos de usuario en sesión actual
                     $_SESSION['usuario'] = $usuario;
                     $_SESSION['usuario_id'] = $usuario['id'];
@@ -72,6 +96,7 @@ class ControladorAutenticacion {
                     exit;
                 } else {
                     // Credenciales incorrectas
+                    $this->registrarIntentoFallido($claveIntento);
                     $_SESSION['error'] = "Credenciales incorrectas. Verifica tu email y contraseña.";
                     header('Location: /Tienda_ropa/publico/index.php?accion=iniciar_sesion');
                     exit;
@@ -90,6 +115,41 @@ class ControladorAutenticacion {
         
         // Cargar vista
         require_once __DIR__ . '/../vistas/usuarios/iniciar_sesion.php';
+    }
+
+    private function obtenerClaveIntento(string $email): string
+    {
+        $ip = $_SERVER['REMOTE_ADDR'] ?? 'unknown';
+        return hash('sha256', strtolower(trim($email)) . '|' . $ip);
+    }
+
+    private function loginEstaLimitado(string $clave): bool
+    {
+        $intento = $_SESSION['intentos_login'][$clave] ?? null;
+        if ($intento === null) {
+            return false;
+        }
+
+        if (time() - $intento['inicio'] >= self::VENTANA_LOGIN_SEGUNDOS) {
+            unset($_SESSION['intentos_login'][$clave]);
+            return false;
+        }
+
+        return $intento['cantidad'] >= self::MAX_INTENTOS_LOGIN;
+    }
+
+    private function registrarIntentoFallido(string $clave): void
+    {
+        $intento = $_SESSION['intentos_login'][$clave] ?? null;
+        if ($intento === null || time() - $intento['inicio'] >= self::VENTANA_LOGIN_SEGUNDOS) {
+            $_SESSION['intentos_login'][$clave] = [
+                'cantidad' => 1,
+                'inicio' => time()
+            ];
+            return;
+        }
+
+        $_SESSION['intentos_login'][$clave]['cantidad']++;
     }
 
     // Método para cerrar sesión - CORREGIDO

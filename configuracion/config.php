@@ -1,23 +1,44 @@
 <?php
 // configuracion/config.php
-define('DB_HOST', 'localhost');
-define('DB_NAME', 'tienda');
-define('DB_USER', 'root');
-define('DB_PASSWORD', '');
 
-// Crear la conexión a la base de datos
-try {
-    $db = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME, DB_USER, DB_PASSWORD);
-    $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); // Habilitar excepciones para errores de PDO
-} catch (PDOException $e) {
-    die("Error de conexión a la base de datos: " . $e->getMessage());
+require_once __DIR__ . '/../vendor/autoload.php';
+require_once __DIR__ . '/../configuracion/csrf.php';
+
+$dotenv = Dotenv\Dotenv::createImmutable(dirname(__DIR__));
+$dotenv->safeLoad();
+
+$variablesDb = ['DB_HOST', 'DB_NAME', 'DB_USER', 'DB_PASSWORD'];
+foreach ($variablesDb as $variableDb) {
+    $valor = $_ENV[$variableDb] ?? getenv($variableDb);
+    if ($valor === false || $valor === '') {
+        throw new RuntimeException("Falta la variable de entorno {$variableDb}.");
+    }
+    define($variableDb, $valor);
+}
+
+// Crear conexión solo fuera de pruebas; modelos aceptan PDO inyectado.
+$db = null;
+if (getenv('APP_ENV') !== 'testing') {
+    try {
+        $db = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME, DB_USER, DB_PASSWORD);
+        $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    } catch (PDOException $e) {
+        die("Error de conexión a la base de datos: " . $e->getMessage());
+    }
 }
 
 // Configuración de sesiones
-session_start(); // Asegúrate de iniciar la sesión
-//ini_set('session.cookie_httponly', 1);
-//ini_set('session.use_only_cookies', 1);
-//ini_set('session.cookie_secure', isset($_SERVER['HTTPS']));
+if (session_status() === PHP_SESSION_NONE) {
+    session_name('tienda_ropa_session');
+    session_set_cookie_params([
+        'secure' => true,
+        'httponly' => true,
+        'samesite' => 'Lax'
+    ]);
+    ini_set('session.use_only_cookies', '1');
+    ini_set('session.use_strict_mode', '1');
+    session_start();
+}
 
 // Para depuración (solo en desarrollo)
 ini_set('display_errors', 1);

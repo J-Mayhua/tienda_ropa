@@ -1,7 +1,7 @@
 <link rel="stylesheet" href="/Tienda_ropa/publico/recursos/css/pie.css">
 <footer class="pie">
     <div class="contenedor">
-        <div class="footer-grid">
+        <div class="cuadricula-pie">
             <div class="footer-col logo-footer">
                 <h3 class="footer-logo">StyleHub</h3>
                 <p class="footer-slogan">Moda que inspira</p>

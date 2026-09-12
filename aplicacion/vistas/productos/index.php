@@ -13,14 +13,14 @@
     </tr>
     <?php foreach ($productos as $producto): ?>
     <tr>
-        <td><?php echo $producto['id']; ?></td>
-        <td><?php echo $producto['nombre']; ?></td>
-        <td><?php echo $producto['descripcion']; ?></td>
-        <td><?php echo $producto['precio']; ?></td>
-        <td><?php echo $producto['categoria']; ?></td>
+        <td><?php echo htmlspecialchars($producto['id'], ENT_QUOTES, 'UTF-8'); ?></td>
+        <td><?php echo htmlspecialchars($producto['nombre'], ENT_QUOTES, 'UTF-8'); ?></td>
+        <td><?php echo htmlspecialchars($producto['descripcion'], ENT_QUOTES, 'UTF-8'); ?></td>
+        <td><?php echo htmlspecialchars($producto['precio'], ENT_QUOTES, 'UTF-8'); ?></td>
+        <td><?php echo htmlspecialchars($producto['categoria'], ENT_QUOTES, 'UTF-8'); ?></td>
         <td>
-            <a href="/tienda_ropa/publico/index.php?accion=editar_producto&id=<?php echo $producto['id']; ?>">Editar</a>
-            <a href="/tienda_ropa/publico/index.php?accion=eliminar_producto&id=<?php echo $producto['id']; ?>">Eliminar</a>
+            <a href="/tienda_ropa/publico/index.php?accion=editar_producto&id=<?php echo htmlspecialchars($producto['id'], ENT_QUOTES, 'UTF-8'); ?>">Editar</a>
+            <a href="/tienda_ropa/publico/index.php?accion=eliminar_producto&id=<?php echo htmlspecialchars($producto['id'], ENT_QUOTES, 'UTF-8'); ?>">Eliminar</a>
         </td>
     </tr>
     <?php endforeach; ?>

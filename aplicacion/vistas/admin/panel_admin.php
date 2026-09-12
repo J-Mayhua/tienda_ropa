@@ -8,17 +8,17 @@ require_once __DIR__ . '/../plantillas/cabecera.php';
     <div class="resumen">
         <div class="card">
             <h3>Productos</h3>
-            <p>Total: <?php echo $totalProductos; ?></p>
+            <p>Total: <?php echo htmlspecialchars($totalProductos, ENT_QUOTES, 'UTF-8'); ?></p>
             <a href="/Tienda_ropa/publico/index.php?accion=listar_productos" class="btn">Gestionar Productos</a>
         </div>
         <div class="card">
             <h3>Pedidos</h3>
-            <p>Total: <?php echo $totalPedidos; ?></p>
+            <p>Total: <?php echo htmlspecialchars($totalPedidos, ENT_QUOTES, 'UTF-8'); ?></p>
             <a href="/Tienda_ropa/publico/index.php?accion=listar_pedidos" class="btn">Ver Pedidos</a>
         </div>
         <div class="card">
             <h3>Usuarios</h3>
-            <p>Total: <?php echo $totalUsuarios; ?></p>
+            <p>Total: <?php echo htmlspecialchars($totalUsuarios, ENT_QUOTES, 'UTF-8'); ?></p>
             <a href="/Tienda_ropa/publico/index.php?accion=gestionar_usuarios" class="btn">Gestionar Usuarios</a>
         </div>
     </div>

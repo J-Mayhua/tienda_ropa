@@ -1,11 +1,23 @@
 <?php
 // aplicacion/modelos/ModeloProductos.php
+
+namespace Tienda\Modelos;
+
 require_once __DIR__ . '/../../configuracion/config.php';
+
+use Tienda\Soporte\Logger;
+use PDO;
+use PDOException;
 
 class ModeloProductos {
     private $conexion;
 
-    public function __construct() {
+    public function __construct(?PDO $conexion = null) {
+        if ($conexion !== null) {
+            $this->conexion = $conexion;
+            return;
+        }
+
         try {
             // Usar PDO para la conexión a la base de datos
             $this->conexion = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME, DB_USER, DB_PASSWORD);
@@ -27,7 +39,7 @@ class ModeloProductos {
             $resultado = $stmt->fetch(PDO::FETCH_ASSOC);
             return $resultado['total'];
         } catch (PDOException $e) {
-            error_log("Error al contar productos: " . $e->getMessage());
+            Logger::obtener()->error('Error al contar productos', ['exception' => $e]);
             return 0;
         }
     }
@@ -43,7 +55,7 @@ class ModeloProductos {
             $stmt = $this->conexion->query($query);
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
-            error_log("Error al obtener productos: " . $e->getMessage());
+            Logger::obtener()->error('Error al obtener productos', ['exception' => $e]);
             return [];
         }
     }
@@ -61,7 +73,7 @@ class ModeloProductos {
             $stmt->execute([':id' => $id]);
             return $stmt->fetch(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
-            error_log("Error al obtener producto por ID: " . $e->getMessage());
+            Logger::obtener()->error('Error al obtener producto por ID', ['exception' => $e]);
             return false;
         }
     }
@@ -98,7 +110,7 @@ class ModeloProductos {
             ]);
             return true;
         } catch (PDOException $e) {
-            error_log("Error al añadir producto: " . $e->getMessage());
+            Logger::obtener()->error('Error al añadir producto', ['exception' => $e]);
             return false;
         }
     }
@@ -146,7 +158,7 @@ class ModeloProductos {
             ]);
             return true;
         } catch (PDOException $e) {
-            error_log("Error al actualizar producto: " . $e->getMessage());
+            Logger::obtener()->error('Error al actualizar producto', ['exception' => $e]);
             return false;
         }
     }
@@ -164,7 +176,7 @@ class ModeloProductos {
             $stmt->execute([':id' => $id]);
             return true;
         } catch (PDOException $e) {
-            error_log("Error al eliminar producto: " . $e->getMessage());
+            Logger::obtener()->error('Error al eliminar producto', ['exception' => $e]);
             return false;
         }
     }

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /* Contenedor del formulario de inicio de sesión */
 .contenedor-inicio-sesion {
     max-width: 400px;
@@ -21,26 +22,68 @@
 
 /* Estilos para etiquetas */
 .contenedor-inicio-sesion label {
-    display: block;
-    font-size: 14px;
-    margin: 15px 0 8px;
-    text-align: left;
-    color: #555;
-    font-weight: 500;
+=======
+:root {
+    --primary: #6a11cb;
+    --secondary: #2575fc;
+    --surface: #ffffff;
+    --surface-alt: #f8fafc;
+    --text: #1f2937;
+    --border: #e5e7eb;
 }
 
+.login-container {
+    max-width: 480px;
+    margin: 4rem auto;
+    padding: 2.5rem;
+    background: var(--surface);
+    border-radius: 24px;
+    border: 1px solid var(--border);
+    box-shadow: 0 18px 38px rgba(15, 23, 42, 0.08);
+}
+
+.login-container h1 {
+    margin-bottom: 1.5rem;
+    text-align: center;
+    font-size: clamp(2rem, 3vw, 2.4rem);
+}
+
+.login-container form {
+    margin: 0;
+    width: 100%;
+    padding: 0;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+}
+
+.login-container .form-group {
+    margin-bottom: 1.1rem;
+}
+
+.login-container label {
+>>>>>>> agents/css-redesign-ecommerce-visual-update
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: var(--text);
+}
+
+<<<<<<< HEAD
 /* Estilos para los campos de entrada */
 .contenedor-inicio-sesion input {
+=======
+.login-container input {
+>>>>>>> agents/css-redesign-ecommerce-visual-update
     width: 100%;
-    padding: 12px;
-    font-size: 14px;
-    border: 1px solid #e0e0e0;
-    border-radius: 8px;
-    outline: none;
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
-    background-color: #f9f9f9;
+    padding: 0.9rem 1rem;
+    border: 1px solid #dbe2ee;
+    border-radius: 12px;
+    background: var(--surface-alt);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
+<<<<<<< HEAD
 .contenedor-inicio-sesion input:focus {
     border-color: #21cb11;
     box-shadow: 0 0 8px rgba(106, 17, 203, 0.2);
@@ -48,19 +91,35 @@
 
 /* Botón de envío */
 .contenedor-inicio-sesion button {
-    width: 100%;
-    padding: 14px;
-    font-size: 16px;
-    font-weight: 600;
-    color: #fff;
-    background: #3311cb;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background 0.3s ease, transform 0.2s ease;
-    margin-top: 20px;
+=======
+.login-container input:focus {
+    outline: none;
+    border-color: rgba(106, 17, 203, 0.5);
+    box-shadow: 0 0 0 4px rgba(106, 17, 203, 0.08);
 }
 
+.login-container .form-actions {
+    margin-top: 1.5rem;
+}
+
+.login-container button,
+.login-container .btn {
+>>>>>>> agents/css-redesign-ecommerce-visual-update
+    width: 100%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 46px;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+<<<<<<< HEAD
 .contenedor-inicio-sesion button:hover {
     background: #2575fc;
     transform: translateY(-2px);
@@ -79,12 +138,52 @@
 
 .contenedor-inicio-sesion a {
     color: #6a11cb;
-    font-weight: 600;
-    text-decoration: none;
-    transition: color 0.3s ease;
+=======
+.login-container button:hover,
+.login-container .btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 10px 18px rgba(31, 41, 55, 0.12);
 }
 
+.login-container p {
+    margin-top: 1rem;
+    text-align: center;
+}
+
+.login-container a {
+    color: var(--primary);
+>>>>>>> agents/css-redesign-ecommerce-visual-update
+    font-weight: 600;
+}
+
+<<<<<<< HEAD
 .contenedor-inicio-sesion a:hover {
     color: #2575fc;
     text-decoration: underline;
 }
+=======
+.login-container a:hover {
+    color: var(--secondary);
+}
+
+.error-message,
+.success-message {
+    margin-bottom: 1rem;
+    padding: 0.9rem 1rem;
+    border-radius: 12px;
+    font-size: 0.95rem;
+    font-weight: 600;
+}
+
+.error-message {
+    background: rgba(220, 53, 69, 0.08);
+    color: #b42318;
+    border: 1px solid rgba(220, 53, 69, 0.18);
+}
+
+.success-message {
+    background: rgba(25, 135, 84, 0.08);
+    color: #0f5132;
+    border: 1px solid rgba(25, 135, 84, 0.18);
+}
+>>>>>>> agents/css-redesign-ecommerce-visual-update

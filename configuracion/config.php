@@ -1,16 +1,23 @@
 <?php
 // configuracion/config.php
 
-require_once __DIR__ . '/../vendor/autoload.php';
-require_once __DIR__ . '/../configuracion/csrf.php';
+// Evita que avisos o errores se impriman antes de iniciar la sesión.
+// Los detalles quedan en los logs del servidor.
+ini_set('display_errors', '0');
+ini_set('display_startup_errors', '0');
+ini_set('log_errors', '1');
+error_reporting(E_ALL);
 
-// Carga el archivo .env local si existe.
+require_once __DIR__ . '/../vendor/autoload.php';
+require_once __DIR__ . '/csrf.php';
+
+// Carga el .env local si existe.
 // En Vercel, las variables se leen desde Environment Variables.
 $dotenv = Dotenv\Dotenv::createImmutable(dirname(__DIR__));
 $dotenv->safeLoad();
 
 /**
- * Lee una variable primero desde Dotenv y luego desde el entorno del servidor.
+ * Lee una variable desde Dotenv o desde el entorno del servidor.
  */
 $leerVariable = static function (string $nombre): ?string {
     $valor = $_ENV[$nombre] ?? getenv($nombre);
@@ -21,6 +28,9 @@ $leerVariable = static function (string $nombre): ?string {
 
     return (string) $valor;
 };
+
+$appEnv = strtolower($leerVariable('APP_ENV') ?? '');
+$esProduccion = in_array($appEnv, ['production', 'prod'], true);
 
 // Variables necesarias para la conexión.
 $variablesDb = [
@@ -34,14 +44,15 @@ $variablesDb = [
 foreach ($variablesDb as $variableDb) {
     $valor = $leerVariable($variableDb);
 
-    // La contraseña puede estar vacía en XAMPP.
+    // DB_PASSWORD puede estar vacía en XAMPP.
     if (
         $valor === null ||
         ($variableDb !== 'DB_PASSWORD' && trim($valor) === '')
     ) {
-        throw new RuntimeException(
-            "Falta la variable de entorno {$variableDb}."
-        );
+        error_log("Falta la variable de entorno {$variableDb}.");
+
+        http_response_code(500);
+        exit('La configuración del servidor está incompleta.');
     }
 
     if (!defined($variableDb)) {
@@ -57,59 +68,16 @@ $puertoDb = filter_var(
 );
 
 if ($puertoDb === false) {
-    throw new RuntimeException('DB_PORT debe ser un puerto válido.');
+    error_log('DB_PORT debe ser un puerto válido.');
+
+    http_response_code(500);
+    exit('La configuración del servidor no es válida.');
 }
 
-// En pruebas automatizadas no se abre una conexión.
-$db = null;
-$appEnv = strtolower($leerVariable('APP_ENV') ?? '');
-
-if ($appEnv !== 'testing') {
-    $dsn = 'mysql:host=' . DB_HOST
-         . ';port=' . $puertoDb
-         . ';dbname=' . DB_NAME
-         . ';charset=utf8mb4';
-
-    $opciones = [
-        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-        PDO::ATTR_EMULATE_PREPARES => false,
-        PDO::ATTR_TIMEOUT => 10,
-    ];
-
-    // XAMPP local: DB_SSL=false.
-    // Aiven en Vercel: DB_SSL=true y se requiere el certificado CA.
-    $usarSsl = strtolower($leerVariable('DB_SSL') ?? 'false') === 'true';
-
-    if ($usarSsl) {
-        $caPath = __DIR__ . '/../certificados/ca.pem';
-
-        if (!is_file($caPath)) {
-            throw new RuntimeException(
-                'Falta el certificado CA de Aiven en certificados/ca.pem.'
-            );
-        }
-
-        $opciones[PDO::MYSQL_ATTR_SSL_CA] = $caPath;
-        $opciones[PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT] = true;
-    }
-
-    try {
-        $db = new PDO($dsn, DB_USER, DB_PASSWORD, $opciones);
-    } catch (PDOException $e) {
-        // El detalle se guarda en los logs, no se muestra al visitante.
-        error_log('Error de conexión MySQL: ' . $e->getMessage());
-
-        http_response_code(500);
-        exit('No se pudo conectar a la base de datos.');
-    }
-}
-
-// Configuración de sesiones.
+// Configura e inicia la sesión antes de cualquier salida.
 if (session_status() === PHP_SESSION_NONE) {
     session_name('tienda_ropa_session');
 
-    $esProduccion = in_array($appEnv, ['production', 'prod'], true);
     $usaHttps = $esProduccion
         || (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off');
 
@@ -125,11 +93,53 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-// En producción no se muestran errores internos en la página.
-$esProduccion = in_array($appEnv, ['production', 'prod'], true);
+// En pruebas automatizadas no se abre una conexión.
+$db = null;
 
-ini_set('display_errors', $esProduccion ? '0' : '1');
-ini_set('display_startup_errors', $esProduccion ? '0' : '1');
-ini_set('log_errors', '1');
+if ($appEnv !== 'testing') {
+    $dsn = 'mysql:host=' . DB_HOST
+         . ';port=' . $puertoDb
+         . ';dbname=' . DB_NAME
+         . ';charset=utf8mb4';
 
-error_reporting(E_ALL);
+    $opciones = [
+        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+        PDO::ATTR_EMULATE_PREPARES => false,
+        PDO::ATTR_TIMEOUT => 10,
+    ];
+
+    // XAMPP local: DB_SSL=false.
+    // Aiven en Vercel: DB_SSL=true y se requiere certificados/ca.pem.
+    $usarSsl = strtolower($leerVariable('DB_SSL') ?? 'false') === 'true';
+
+    if ($usarSsl) {
+        $caPath = __DIR__ . '/../certificados/ca.pem';
+
+        if (!is_file($caPath) || !is_readable($caPath)) {
+            error_log('No se encontró o no se puede leer certificados/ca.pem.');
+
+            http_response_code(500);
+            exit('No se pudo establecer la conexión segura con la base de datos.');
+        }
+
+        // PHP 8.5 o posterior usa los nombres nuevos de las constantes.
+        if (PHP_VERSION_ID >= 80500) {
+            $opciones[\Pdo\Mysql::ATTR_SSL_CA] = $caPath;
+            $opciones[\Pdo\Mysql::ATTR_SSL_VERIFY_SERVER_CERT] = true;
+        } else {
+            $opciones[\PDO::MYSQL_ATTR_SSL_CA] = $caPath;
+            $opciones[\PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT] = true;
+        }
+    }
+
+    try {
+        $db = new PDO($dsn, DB_USER, DB_PASSWORD, $opciones);
+    } catch (PDOException $e) {
+        // El detalle técnico queda en los logs, no se muestra al visitante.
+        error_log('Error de conexión MySQL: ' . $e->getMessage());
+
+        http_response_code(500);
+        exit('No se pudo conectar a la base de datos.');
+    }
+}

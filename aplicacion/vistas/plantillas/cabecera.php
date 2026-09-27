@@ -1,59 +1,34 @@
 <?php
-// aplicacion/vistas/plantillas/cabecera.php
-
 require_once __DIR__ . '/../../../configuracion/config.php';
 
-// config.php inicia la sesión. Este bloque es una protección adicional.
+// Verificar el estado de la sesión
 if (session_status() !== PHP_SESSION_ACTIVE) {
     session_start();
 }
 
-$usuarioSesion = $_SESSION['usuario'] ?? null;
-$usuarioAutenticado = is_array($usuarioSesion);
-
+// Verificar el rol del usuario
 $is_admin = isset($_SESSION['rol']) && $_SESSION['rol'] === 'admin';
 $is_cliente = isset($_SESSION['rol']) && $_SESSION['rol'] === 'cliente';
+$usuario_autenticado = isset($_SESSION['usuario']);
 
-$rol_label = $is_admin
-    ? 'Admin'
-    : ($is_cliente ? 'Cliente' : '');
-
+// Iniciales del nombre para el avatar (ej. "Ana Díaz" -> "AD")
 if (!function_exists('iniciales_usuario')) {
-    function iniciales_usuario(?string $nombre): string
-    {
+    function iniciales_usuario(?string $nombre): string {
         $nombre = trim((string) $nombre);
-
         if ($nombre === '') {
             return '?';
         }
-
         $partes = preg_split('/\s+/', $nombre);
         $iniciales = '';
-
-        foreach (array_slice($partes ?: [], 0, 2) as $parte) {
-            if (function_exists('mb_substr') && function_exists('mb_strtoupper')) {
-                $iniciales .= mb_strtoupper(mb_substr($parte, 0, 1));
-            } else {
-                $iniciales .= strtoupper(substr($parte, 0, 1));
-            }
+        foreach (array_slice($partes, 0, 2) as $parte) {
+            $iniciales .= mb_strtoupper(mb_substr($parte, 0, 1));
         }
-
         return $iniciales !== '' ? $iniciales : '?';
     }
 }
 
-$assetBase = rtrim(ASSET_BASE_URL, '/');
-$appEntry = APP_ENTRY_URL;
-
-$urlAsset = static function (string $ruta) use ($assetBase): string {
-    return $assetBase . '/' . ltrim($ruta, '/');
-};
-
-$urlAccion = static function (string $accion) use ($appEntry): string {
-    return $appEntry . '?accion=' . rawurlencode($accion);
-};
-
-$urlInicio = $appEntry;
+$nombre_usuario = $usuario_autenticado ? ($_SESSION['usuario']['nombre'] ?? '') : '';
+$rol_label = $is_admin ? 'Admin' : ($is_cliente ? 'Cliente' : '');
 ?>
 
 <!DOCTYPE html>
@@ -61,194 +36,122 @@ $urlInicio = $appEntry;
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>Tienda Ropa</title>
+    <link rel="stylesheet" href="/Tienda_ropa/publico/recursos/css/variables.css">
+    <link rel="stylesheet" href="/Tienda_ropa/publico/recursos/css/estilos.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    <link
-        rel="stylesheet"
-        href="<?= htmlspecialchars($urlAsset('css/variables.css'), ENT_QUOTES, 'UTF-8') ?>"
-    >
-
-    <link
-        rel="stylesheet"
-        href="<?= htmlspecialchars($urlAsset('css/estilos.css'), ENT_QUOTES, 'UTF-8') ?>"
-    >
-
-    <link
-        rel="stylesheet"
-        href="<?= htmlspecialchars($urlAsset('css/pie.css'), ENT_QUOTES, 'UTF-8') ?>"
-    >
-
-    <link
-        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
-        rel="stylesheet"
-    >
-
-    <link
-        rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-    >
 </head>
-
 <body>
     <header class="cabecera">
         <div class="contenedor-cabecera">
+            <!-- Logo e imagen a la izquierda -->
             <div class="logo-section">
                 <div class="logo-image-container">
-                    <img
-                        src="<?= htmlspecialchars($urlAsset('imagenes/logo.jpg'), ENT_QUOTES, 'UTF-8') ?>"
-                        alt="Logo de Tienda Ropa"
-                        class="logo-image"
-                    >
+                    <img src="/Tienda_ropa/publico/recursos/imagenes/logo.jpg" alt="Logo" class="logo-image">
                 </div>
-
                 <h1 class="logo">Tienda Ropa</h1>
-
-                <?php if ($rol_label !== ''): ?>
-                    <span class="badge-rol badge-rol--<?= $is_admin ? 'admin' : 'cliente' ?>">
-                        <?= htmlspecialchars($rol_label, ENT_QUOTES, 'UTF-8') ?>
+                <?php if ($rol_label): ?>
+                    <span class="badge-rol badge-rol--<?php echo $is_admin ? 'admin' : 'cliente'; ?>">
+                        <?php echo htmlspecialchars($rol_label, ENT_QUOTES, 'UTF-8'); ?>
                     </span>
                 <?php endif; ?>
             </div>
 
-            <button
-                type="button"
-                class="menu-toggle"
-                id="menuToggle"
-                aria-label="Abrir menú"
-                aria-expanded="false"
-                aria-controls="navegacionPrincipal"
-            >
-                <i class="fas fa-bars" aria-hidden="true"></i>
+            <!-- Botón hamburguesa (solo visible en móvil) -->
+            <button type="button" class="menu-toggle" id="menuToggle" aria-label="Abrir menú" aria-expanded="false" aria-controls="navegacionPrincipal">
+                <i class="fas fa-bars"></i>
             </button>
 
+            <!-- Navegación a la derecha -->
             <nav class="navegacion" id="navegacionPrincipal">
-                <?php if ($usuarioAutenticado): ?>
+                <?php if ($usuario_autenticado): ?>
+                    <!-- Enlace de Inicio (común para todos) -->
                     <div class="nav-button">
-                        <a
-                            href="<?= htmlspecialchars($urlInicio, ENT_QUOTES, 'UTF-8') ?>"
-                            class="nav-link"
-                        >
+                        <a href="/Tienda_ropa/publico/index.php" class="nav-link">
                             <span>Inicio</span>
                         </a>
                     </div>
 
+                    <!-- Enlaces exclusivos para clientes -->
                     <?php if ($is_cliente): ?>
                         <div class="nav-button cart-btn">
-                            <a
-                                href="<?= htmlspecialchars($urlAccion('ver_carrito'), ENT_QUOTES, 'UTF-8') ?>"
-                                class="nav-link"
-                            >
-                                <i class="fas fa-shopping-cart" aria-hidden="true"></i>
+                            <a href="/Tienda_ropa/publico/index.php?accion=ver_carrito" class="nav-link">
+                                <i class="fas fa-shopping-cart"></i>
                                 <span>Carrito</span>
                             </a>
                         </div>
-
                         <div class="nav-button">
-                            <a
-                                href="<?= htmlspecialchars($urlAccion('ver_pedidos'), ENT_QUOTES, 'UTF-8') ?>"
-                                class="nav-link"
-                            >
-                                <i class="fas fa-box" aria-hidden="true"></i>
-                                <span>Mis pedidos</span>
+                            <a href="/Tienda_ropa/publico/index.php?accion=ver_pedidos" class="nav-link">
+                                <i class="fas fa-box"></i>
+                                <span>Mis Pedidos</span>
                             </a>
                         </div>
-
                         <div class="nav-button">
-                            <a
-                                href="<?= htmlspecialchars($urlAccion('ver_perfil'), ENT_QUOTES, 'UTF-8') ?>"
-                                class="nav-link"
-                            >
-                                <i class="fas fa-user" aria-hidden="true"></i>
-                                <span>Mi perfil</span>
+                            <a href="/Tienda_ropa/publico/index.php?accion=ver_perfil" class="nav-link">
+                                <i class="fas fa-user"></i>
+                                <span>Mi Perfil</span>
                             </a>
                         </div>
                     <?php endif; ?>
 
+                    <!-- Enlaces exclusivos para administradores -->
                     <?php if ($is_admin): ?>
                         <div class="nav-button">
-                            <a
-                                href="<?= htmlspecialchars($urlAccion('panel_admin'), ENT_QUOTES, 'UTF-8') ?>"
-                                class="nav-link"
-                            >
-                                <i class="fas fa-gauge-high" aria-hidden="true"></i>
-                                <span>Panel principal</span>
+                            <a href="/Tienda_ropa/publico/index.php?accion=panel_admin" class="nav-link">
+                                <i class="fas fa-gauge-high"></i>
+                                <span>Panel Principal</span>
                             </a>
                         </div>
-
                         <div class="nav-button">
-                            <a
-                                href="<?= htmlspecialchars($urlAccion('listar_productos'), ENT_QUOTES, 'UTF-8') ?>"
-                                class="nav-link"
-                            >
-                                <i class="fas fa-shirt" aria-hidden="true"></i>
+                            <a href="/Tienda_ropa/publico/index.php?accion=listar_productos" class="nav-link">
+                                <i class="fas fa-tshirt"></i>
                                 <span>Productos</span>
                             </a>
                         </div>
-
                         <div class="nav-button">
-                            <a
-                                href="<?= htmlspecialchars($urlAccion('gestionar_usuarios'), ENT_QUOTES, 'UTF-8') ?>"
-                                class="nav-link"
-                            >
-                                <i class="fas fa-users" aria-hidden="true"></i>
+                            <a href="/Tienda_ropa/publico/index.php?accion=gestionar_usuarios" class="nav-link">
+                                <i class="fas fa-users"></i>
                                 <span>Usuarios</span>
                             </a>
                         </div>
-
                         <div class="nav-button">
-                            <a
-                                href="<?= htmlspecialchars($urlAccion('listar_pedidos'), ENT_QUOTES, 'UTF-8') ?>"
-                                class="nav-link"
-                            >
-                                <i class="fas fa-box" aria-hidden="true"></i>
-                                <span>Ver pedidos</span>
+                            <a href="/Tienda_ropa/publico/index.php?accion=listar_pedidos" class="nav-link">
+                                <i class="fas fa-box"></i>
+                                <span>Ver Pedidos</span>
                             </a>
                         </div>
                     <?php endif; ?>
 
+                    <!-- Enlace para cerrar sesión -->
                     <div class="nav-button nav-destacado">
-                        <a
-                            href="<?= htmlspecialchars($urlAccion('cerrar_sesion'), ENT_QUOTES, 'UTF-8') ?>"
-                            class="nav-link"
-                        >
-                            <span>Cerrar sesión</span>
+                        <a href="/Tienda_ropa/publico/index.php?accion=cerrar_sesion" class="nav-link">
+                            <span>Cerrar Sesión</span>
                         </a>
                     </div>
 
                 <?php else: ?>
+                    <!-- Enlaces para usuarios no autenticados -->
                     <div class="nav-button">
-                        <a
-                            href="<?= htmlspecialchars($urlInicio, ENT_QUOTES, 'UTF-8') ?>"
-                            class="nav-link"
-                        >
+                        <a href="/Tienda_ropa/publico/index.php" class="nav-link">
                             <span>Inicio</span>
                         </a>
                     </div>
-
                     <div class="nav-button">
-                        <a
-                            href="<?= htmlspecialchars($urlAccion('nosotros'), ENT_QUOTES, 'UTF-8') ?>"
-                            class="nav-link"
-                        >
+                        <a href="/Tienda_ropa/aplicacion/vistas/productos/nosotros.php" class="nav-link">
                             <span>Nosotros</span>
                         </a>
                     </div>
 
                     <div class="nav-button">
-                        <a
-                            href="<?= htmlspecialchars($urlAccion('iniciar_sesion'), ENT_QUOTES, 'UTF-8') ?>"
-                            class="nav-link"
-                        >
-                            <span>Iniciar sesión</span>
+                        <a href="/Tienda_ropa/publico/index.php?accion=iniciar_sesion" class="nav-link">
+                            <span>Iniciar Sesión</span>
                         </a>
                     </div>
 
                     <div class="nav-button nav-destacado">
-                        <a
-                            href="<?= htmlspecialchars($urlAccion('registrarse'), ENT_QUOTES, 'UTF-8') ?>"
-                            class="nav-link"
-                        >
+                        <a href="/Tienda_ropa/publico/index.php?accion=registrarse" class="nav-link">
                             <span>Registrarse</span>
                         </a>
                     </div>
@@ -257,12 +160,5 @@ $urlInicio = $appEntry;
         </div>
     </header>
 
-    <script
-        src="<?= htmlspecialchars($urlAsset('js/cabecera.js'), ENT_QUOTES, 'UTF-8') ?>"
-        defer
-    ></script>
-
-    <script
-        src="<?= htmlspecialchars($urlAsset('js/confirmaciones.js'), ENT_QUOTES, 'UTF-8') ?>"
-        defer
-    ></script>
+    <script src="/Tienda_ropa/publico/recursos/js/cabecera.js" defer></script>
+    <script src="/Tienda_ropa/publico/recursos/js/confirmaciones.js" defer></script>

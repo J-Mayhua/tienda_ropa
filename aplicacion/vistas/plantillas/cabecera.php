@@ -139,9 +139,13 @@ $rol_label = $is_admin ? 'Admin' : ($is_cliente ? 'Cliente' : '');
                         </a>
                     </div>
                     <div class="nav-button">
-                        <a href="/Tienda_ropa/aplicacion/vistas/productos/nosotros.php" class="nav-link">
-                            <span>Nosotros</span>
-                        </a>
+                        <a
+                        href="<?= htmlspecialchars(APP_ENTRY_URL, ENT_QUOTES, 'UTF-8') ?>?accion=nosotros"
+                        class="nav-link"
+                    >
+                        <span>Nosotros</span>
+                    </a>
+
                     </div>
 
                     <div class="nav-button">

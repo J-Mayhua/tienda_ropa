@@ -1,10 +1,15 @@
 {
+  "cleanUrls": true,
   "functions": {
-    "api/*.php": { "runtime": "vercel-php@0.9.0" },
-    "publico/*.php": { "runtime": "vercel-php@0.9.0" }
+    "api/*.php": {
+      "runtime": "vercel-php@0.9.0"
+    },
+    "publico/*.php": {
+      "runtime": "vercel-php@0.9.0"
+    }
   },
-  "rewrites": [
-    { "source": "/api/health", "destination": "/api/health.php" },
-    { "source": "/(.*)", "destination": "/publico/index.php" }
+  "routes": [
+    { "src": "/api/health", "dest": "/api/health.php" },
+    { "src": "/(.*)", "dest": "/publico/index.php" }
   ]
 }

@@ -2,17 +2,14 @@
 // aplicacion/vistas/admin/productos/gestionar_productos.php
 require_once __DIR__ . '/../plantillas/cabecera.php';
 ?>
+<link rel="stylesheet" href="/Tienda_ropa/publico/recursos/css/gestionar_productos.css">
 
 <div class="contenedor">
-    <h2>Gestionar Productos</h2>
-<<<<<<< HEAD
-    <a href="/Tienda_ropa/publico/index.php?accion=listar_productos" class="btn btn-secundario">Volver a la Lista</a>
-    <form action="/Tienda_ropa/publico/index.php?accion=añadir_producto" method="post" enctype="multipart/form-data">
-        <?php echo csrf_field(); ?>
-=======
-    <a href="/Tienda_ropa/publico/index.php?accion=listar_productos" class="btn">Volver a la Lista</a>
+    <center><h2>Gestionar Productos</h2></center>
+
     <form action="/Tienda_ropa/publico/index.php?accion=añadir_producto" method="post" enctype="multipart/form-data" class="form-card">
->>>>>>> agents/css-redesign-ecommerce-visual-update
+        <?php echo csrf_field(); ?>
+
         <div class="form-group">
             <label for="nombre">Nombre:</label>
             <input type="text" id="nombre" name="nombre" required>
@@ -49,6 +46,7 @@ require_once __DIR__ . '/../plantillas/cabecera.php';
             <label for="imagen">Imagen:</label>
             <input type="file" id="imagen" name="imagen" accept="image/*" required>
         </div>
+
         <div class="form-actions">
             <button type="submit" class="btn">Añadir Producto</button>
             <a href="/Tienda_ropa/publico/index.php?accion=listar_productos" class="btn btn-secundario">Volver a la Lista</a>

@@ -1,0 +1,298 @@
+/* DETALLE DE PEDIDO (ADMIN) — StyleHub
+   No redefinir .contenedor aquí (ver nota en gestionar_usuarios.css).
+   .acciones, .btn ya están definidos globalmente en estilos.css —
+   aquí solo va lo específico de esta vista. */
+
+.contenedor--angosto {
+    max-width: 900px;
+}
+
+.detalle-pedido__volver {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--ink-soft);
+    margin-bottom: 1.25rem;
+}
+
+.detalle-pedido__volver:hover {
+    color: var(--brass);
+}
+
+.contenedor h1 {
+    font-size: clamp(1.5rem, 3vw, 1.9rem);
+    margin: 0 0 1.5rem;
+}
+
+.contenedor h2 {
+    font-size: 1.25rem;
+    margin: 2.25rem 0 1rem;
+}
+
+/* ============================================================
+   Tarjeta "recibo" con los datos del pedido
+   ============================================================ */
+.info-pedido {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1.5rem;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-left: 4px solid var(--brass);
+    border-radius: 10px;
+    padding: 1.5rem 1.75rem;
+    margin-bottom: 1rem;
+    box-shadow: var(--shadow-lg);
+}
+
+.info-pedido__item {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.8rem;
+}
+
+.info-pedido__icono {
+    width: 38px;
+    height: 38px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: var(--stone);
+    color: var(--brass);
+    font-size: 1rem;
+}
+
+.info-pedido__label {
+    display: block;
+    font-size: 0.74rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--ink-soft);
+    margin-bottom: 0.2rem;
+}
+
+.info-pedido__valor {
+    display: block;
+    font-size: 1rem;
+    color: var(--ink);
+    font-weight: 600;
+}
+
+.info-pedido__valor a {
+    color: var(--brass);
+    font-weight: 600;
+}
+
+/* Badge de estado (mismo criterio de color que el resto del admin) */
+.badge-estado {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.3rem 0.75rem;
+    font-size: 0.82rem;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    text-transform: capitalize;
+    border-radius: 999px;
+}
+
+.badge-estado::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: currentColor;
+    flex-shrink: 0;
+}
+
+.badge-estado--pendiente {
+    background: rgba(169, 121, 60, 0.14);
+    color: var(--brass);
+}
+
+.badge-estado--procesando {
+    background: rgba(58, 65, 54, 0.08);
+    color: var(--ink-soft);
+}
+
+.badge-estado--enviado {
+    background: rgba(91, 107, 78, 0.12);
+    color: var(--sage);
+}
+
+.badge-estado--entregado {
+    background: rgba(91, 107, 78, 0.2);
+    color: var(--sage);
+}
+
+.badge-estado--cancelado {
+    background: rgba(169, 69, 47, 0.12);
+    color: var(--rust);
+}
+
+/* ============================================================
+   Tabla de productos
+   ============================================================ */
+.tabla-responsive {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: var(--shadow-lg);
+}
+
+.tabla-productos {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: var(--font-body);
+    font-size: 0.92rem;
+}
+
+.tabla-productos thead th {
+    text-align: left;
+    font-size: 0.74rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--paper);
+    background: var(--ink);
+    padding: 0.9rem 1.1rem;
+    white-space: nowrap;
+}
+
+.tabla-productos tbody td {
+    padding: 0.9rem 1.1rem;
+    border-bottom: 1px solid var(--line);
+    color: var(--ink);
+    vertical-align: middle;
+}
+
+.tabla-productos tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.tabla-productos tbody tr:hover {
+    background: var(--stone);
+}
+
+.tabla-productos tbody td:first-child {
+    font-weight: 600;
+}
+
+.imagen-miniatura {
+    width: 52px;
+    height: 52px;
+    object-fit: cover;
+    border-radius: 6px;
+    border: 1px solid var(--line);
+}
+
+.sin-imagen {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 52px;
+    height: 52px;
+    border-radius: 6px;
+    background: var(--stone);
+    color: var(--ink-soft);
+    font-size: 1.1rem;
+}
+
+.text-right {
+    text-align: right;
+}
+
+.tabla-productos tfoot td {
+    padding: 1.1rem;
+    border-top: 2px solid var(--ink);
+    font-size: 1.1rem;
+    background: var(--stone);
+}
+
+.tabla-productos tfoot td:last-child {
+    color: var(--brass);
+    font-weight: 700;
+}
+
+/* ============================================================
+   Acciones
+   ============================================================ */
+.acciones {
+    margin-top: 2rem;
+    justify-content: flex-end;
+}
+
+/* ============================================================
+   Responsive — tabla apilada en pantallas chicas
+   ============================================================ */
+@media (max-width: 700px) {
+    .tabla-productos thead {
+        display: none;
+    }
+
+    .tabla-productos,
+    .tabla-productos tbody,
+    .tabla-productos tr,
+    .tabla-productos td {
+        display: block;
+        width: 100%;
+        min-width: 0;
+    }
+
+    .tabla-responsive {
+        overflow-x: visible;
+    }
+
+    .tabla-productos tbody tr {
+        border-bottom: 1px solid var(--line);
+        padding: 0.9rem 1.1rem;
+    }
+
+    .tabla-productos tbody td {
+        border-bottom: none;
+        padding: 0.35rem 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 1rem;
+        text-align: right;
+    }
+
+    .tabla-productos tbody td::before {
+        content: attr(data-label);
+        font-size: 0.72rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        color: var(--ink-soft);
+        text-align: left;
+        flex-shrink: 0;
+    }
+
+    .tabla-productos tfoot tr {
+        display: flex;
+        justify-content: space-between;
+        padding: 0.9rem 1.1rem;
+    }
+
+    .tabla-productos tfoot td {
+        border-top: none;
+        padding: 0;
+        width: auto;
+        background: transparent;
+    }
+
+    .acciones {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .acciones .btn {
+        width: 100%;
+    }
+}

@@ -1,42 +1,36 @@
 <?php require_once __DIR__ . '/../plantillas/cabecera.php'; ?>
-<link rel="stylesheet" href="/tienda_ropa/publico/recursos/css/iniciar_sesion.css">
-<<<<<<< HEAD
+<link rel="stylesheet" href="/Tienda_ropa/publico/recursos/css/iniciar_sesion.css">
+
 <div class="contenedor-inicio-sesion">
-<h1>Registrarse</h1>
-<form method="POST" action="">
-    <?php echo csrf_field(); ?>
-    <p>Los campos marcados con * son obligatorios.</p>
-    <label for="nombre">Nombre: <span aria-hidden="true">*</span></label>
-    <input type="text" id="nombre" name="nombre" required>
-    <br>
-    <label for="email">Email: <span aria-hidden="true">*</span></label>
-    <input type="email" id="email" name="email" required>
-    <br>
-    <label for="password">Contraseña: <span aria-hidden="true">*</span></label>
-    <input type="password" id="password" name="password" required>
-    <br>
-    <button type="submit">Registrarse</button>
-</form>
-=======
-<div class="login-container">
     <h1>Registrarse</h1>
-    <form method="POST" action="" class="login-form">
+
+    <?php require __DIR__ . '/../plantillas/mensajes.php'; ?>
+
+    <form method="POST" action="/Tienda_ropa/publico/index.php?accion=registrarse" class="login-form">
+        <?php echo csrf_field(); ?>
+        <p>Los campos marcados con * son obligatorios.</p>
+
         <div class="form-group">
-            <label for="nombre">Nombre:</label>
-            <input type="text" name="nombre" id="nombre" required>
+            <label for="nombre">Nombre: <span aria-hidden="true">*</span></label>
+            <input type="text" id="nombre" name="nombre" required>
         </div>
+
         <div class="form-group">
-            <label for="email">Email:</label>
-            <input type="email" name="email" id="email" required>
+            <label for="email">Email: <span aria-hidden="true">*</span></label>
+            <input type="email" id="email" name="email" required>
         </div>
+
         <div class="form-group">
-            <label for="password">Contraseña:</label>
-            <input type="password" name="password" id="password" required>
+            <label for="password">Contraseña: <span aria-hidden="true">*</span></label>
+            <input type="password" id="password" name="password" required>
         </div>
+
         <div class="form-actions">
             <button type="submit" class="btn">Registrarse</button>
         </div>
     </form>
->>>>>>> agents/css-redesign-ecommerce-visual-update
+
+    <p>¿Ya tienes una cuenta? <a href="/Tienda_ropa/publico/index.php?accion=iniciar_sesion">Inicia sesión aquí</a></p>
 </div>
+
 <?php require_once __DIR__ . '/../plantillas/pie.php'; ?>

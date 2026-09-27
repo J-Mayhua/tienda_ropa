@@ -55,10 +55,10 @@ class ControladorAdmin {
     // Listar pedidos (para el enlace "Ver Pedidos")
     public function listarPedidos() {
         $this->verificarAdmin();
-    
+
         // Obtener la lista de pedidos
         $pedidos = $this->modeloPedidos->obtenerPedidos();
-    
+
         // Cargar la vista
         require_once __DIR__ . '/../vistas/admin/listar_pedidos.php';
     }
@@ -73,7 +73,7 @@ class ControladorAdmin {
     // Añadir un nuevo producto
     public function añadirProducto() {
         $this->verificarAdmin();
-    
+
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Validar y sanitizar los datos del formulario
             $nombre = filter_input(INPUT_POST, 'nombre', FILTER_SANITIZE_STRING);
@@ -84,7 +84,7 @@ class ControladorAdmin {
             $color = filter_input(INPUT_POST, 'color', FILTER_SANITIZE_STRING);
             $stock = filter_input(INPUT_POST, 'stock', FILTER_SANITIZE_NUMBER_INT);
             $descuento = filter_input(INPUT_POST, 'descuento', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
-    
+
             // Procesar la subida de la imagen
             $imagen = '';
             if (isset($_FILES['imagen']) && $_FILES['imagen']['error'] === UPLOAD_ERR_OK) {
@@ -100,7 +100,7 @@ class ControladorAdmin {
                     exit();
                 }
             }
-    
+
             // Añadir el producto si los datos son válidos
             if ($nombre && $descripcion && $precio && $categoria && $talla && $color && $stock) {
                 if ($this->modeloProductos->añadirProducto($nombre, $descripcion, $precio, $categoria, $talla, $color, $imagen, $stock, $descuento)) {
@@ -118,7 +118,7 @@ class ControladorAdmin {
                 exit();
             }
         }
-    
+
         require_once __DIR__ . '/../vistas/admin/productos/añadir.php';
     }
 
@@ -190,20 +190,20 @@ class ControladorAdmin {
     // Ver detalles de un pedido
     public function verPedido($id) {
         $this->verificarAdmin();
-    
+
         // Obtener los detalles del pedido
         $pedido = $this->modeloPedidos->obtenerDetallesPedido($id);
-    
+
         // Verificar si el pedido existe
         if (!$pedido) {
             $_SESSION['error'] = "El pedido no existe.";
             header('Location: /Tienda_ropa/publico/index.php?accion=listar_pedidos');
             exit();
         }
-    
+
         // Obtener los productos asociados al pedido
         $detallesPedido = $this->modeloPedidos->obtenerProductosPedido($id);
-    
+
         // Pasar los datos a la vista
         require_once __DIR__ . '/../vistas/admin/ver.php';
     }
@@ -258,7 +258,7 @@ class ControladorAdmin {
         }
 
         $usuario = $this->modeloUsuarios->obtenerUsuarioPorId($id);
-        require_once __DIR__ . '/../vistas/admin/usuarios/editar.php';
+        require_once __DIR__ . '/../vistas/usuarios/editar_perfil.php';
     }
 
     // Eliminar un usuario
@@ -275,10 +275,10 @@ class ControladorAdmin {
     }
     public function gestionarUsuarios() {
         $this->verificarAdmin();
-    
+
         // Obtener la lista de usuarios
         $usuarios = $this->modeloUsuarios->obtenerUsuarios();
-    
+
         // Cargar la vista
         require_once __DIR__ . '/../vistas/admin/gestionar_usuarios.php';
     }

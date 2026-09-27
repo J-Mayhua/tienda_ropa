@@ -83,7 +83,7 @@ class ModeloUsuarios {
     public function iniciarSesion($email, $contrasena) {
         try {
             Logger::obtener()->info('Intento de inicio de sesión', ['email' => $email]);
-            
+
             $query = "SELECT * FROM usuarios WHERE email = :email";
             $stmt = $this->db->prepare($query);
             $stmt->execute([':email' => $email]);
@@ -95,7 +95,7 @@ class ModeloUsuarios {
             }
 
             Logger::obtener()->info('Usuario encontrado', ['email' => $email]);
-            
+
             // Para depuración, verificar el hash almacenado
             if (password_verify($contrasena, $usuario['password'])) {
                 Logger::obtener()->info('Contraseña verificada', ['email' => $email]);
@@ -154,8 +154,19 @@ class ModeloUsuarios {
      * @param string $rol Rol del usuario.
      * @return bool True si se actualizó correctamente, false en caso contrario.
      */
-    public function actualizarUsuario($id, $nombre, $email, $rol) {
-        try {
+   public function actualizarUsuario($id, $nombre, $email, $rol = null) {
+    try {
+        if ($rol === null) {
+            // No se especificó rol (ej. el propio usuario editando su perfil):
+            // se conserva el rol actual para no perderlo ni permitir que se altere sin querer.
+            $query = "UPDATE usuarios SET nombre = :nombre, email = :email WHERE id = :id";
+            $stmt = $this->db->prepare($query);
+            $stmt->execute([
+                ':id' => $id,
+                ':nombre' => $nombre,
+                ':email' => $email
+            ]);
+        } else {
             $query = "UPDATE usuarios SET nombre = :nombre, email = :email, rol = :rol WHERE id = :id";
             $stmt = $this->db->prepare($query);
             $stmt->execute([
@@ -164,12 +175,13 @@ class ModeloUsuarios {
                 ':email' => $email,
                 ':rol' => $rol
             ]);
-            return true;
-        } catch (PDOException $e) {
-            Logger::obtener()->error('Error al actualizar usuario', ['exception' => $e]);
-            return false;
         }
+        return true;
+    } catch (PDOException $e) {
+        Logger::obtener()->error('Error al actualizar usuario', ['exception' => $e]);
+        return false;
     }
+}
 
     /**
      * Eliminar un usuario.

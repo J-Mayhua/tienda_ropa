@@ -1,0 +1,220 @@
+/* LISTAR PEDIDOS — StyleHub Admin
+   Usa las variables de variables.css y las clases globales
+   .contenedor / .contenedor-principal (definidas en estilos.css).
+   No redefinir .contenedor aquí — ver nota en gestionar_usuarios.css. */
+
+.contenedor--angosto {
+    max-width: 1100px;
+}
+
+.contenedor h2 {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 1.7rem;
+    color: var(--ink);
+    margin: 0 0 1.25rem;
+    text-align: center;
+}
+
+/* ============================================================
+   Botones (compartidos con el resto del admin)
+   ============================================================ */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    padding: 0.55rem 1.1rem;
+    background: var(--brass);
+    color: var(--paper);
+    border: 1px solid var(--brass);
+    font-family: var(--font-body);
+    font-weight: 500;
+    font-size: 0.85rem;
+    cursor: pointer;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: background 200ms ease, border-color 200ms ease;
+}
+
+.btn:hover {
+    background: var(--brass-soft);
+    border-color: var(--brass-soft);
+}
+
+.btn-secundario {
+    background: transparent;
+    color: var(--ink);
+    border: 1px solid var(--line);
+}
+
+.btn-secundario:hover {
+    background: var(--stone);
+    border-color: var(--ink-soft);
+}
+
+.btn:focus-visible {
+    outline: 2px solid var(--sage);
+    outline-offset: 2px;
+}
+
+/* ============================================================
+   Tabla
+   ============================================================ */
+.tabla-responsive {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    overflow-x: auto;
+}
+
+.tabla {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: var(--font-body);
+    font-size: 0.92rem;
+}
+
+.tabla thead th {
+    text-align: left;
+    font-size: 0.76rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    padding: 0.9rem 1.1rem;
+    border-bottom: 2px solid var(--ink);
+    white-space: nowrap;
+}
+
+.tabla tbody td {
+    padding: 0.85rem 1.1rem;
+    border-bottom: 1px solid var(--line);
+    color: var(--ink);
+    vertical-align: middle;
+}
+
+.tabla tbody tr:hover {
+    background: var(--stone);
+}
+
+.tabla tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.tabla__vacio {
+    text-align: center;
+    color: var(--ink-soft);
+    padding: 2.5rem 1rem;
+}
+
+.tabla__acciones {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.tabla__total {
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+/* ============================================================
+   Badge de estado del pedido
+   ============================================================ */
+.badge-estado {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.3rem 0.75rem;
+    font-size: 0.74rem;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    text-transform: capitalize;
+    border-radius: 999px;
+    white-space: nowrap;
+}
+
+.badge-estado::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: currentColor;
+    flex-shrink: 0;
+}
+
+.badge-estado--pendiente {
+    background: rgba(169, 121, 60, 0.14);
+    color: var(--brass);
+}
+
+.badge-estado--procesando {
+    background: rgba(58, 65, 54, 0.08);
+    color: var(--ink-soft);
+}
+
+.badge-estado--enviado {
+    background: rgba(91, 107, 78, 0.12);
+    color: var(--sage);
+}
+
+.badge-estado--entregado {
+    background: rgba(91, 107, 78, 0.2);
+    color: var(--sage);
+}
+
+.badge-estado--cancelado {
+    background: rgba(169, 69, 47, 0.12);
+    color: var(--rust);
+}
+
+/* ============================================================
+   Responsive — tabla apilada en pantallas chicas
+   ============================================================ */
+@media (max-width: 760px) {
+    .tabla thead {
+        display: none;
+    }
+
+    .tabla,
+    .tabla tbody,
+    .tabla tr,
+    .tabla td {
+        display: block;
+        width: 100%;
+        min-width: 0;
+    }
+
+    .tabla-responsive {
+        overflow-x: visible;
+    }
+
+    .tabla tbody tr {
+        border-bottom: 1px solid var(--line);
+        padding: 0.9rem 1.1rem;
+    }
+
+    .tabla tbody td {
+        border-bottom: none;
+        padding: 0.35rem 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 1rem;
+        text-align: right;
+    }
+
+    .tabla tbody td::before {
+        content: attr(data-label);
+        font-size: 0.72rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        color: var(--ink-soft);
+        text-align: left;
+        flex-shrink: 0;
+    }
+
+    .tabla__acciones {
+        justify-content: flex-end;
+    }
+}

@@ -1,6 +1,6 @@
 <?php
 // aplicacion/vistas/admin/usuarios/listar_usuarios.php
-require_once __DIR__ . '/../../plantillas/cabecera.php';
+require_once __DIR__ . '/../plantillas/cabecera.php';
 ?>
 
 <div class="contenedor">
@@ -35,5 +35,5 @@ require_once __DIR__ . '/../../plantillas/cabecera.php';
 </div>
 
 <?php
-require_once __DIR__ . '/../../plantillas/pie.php';
+require_once __DIR__ . '/../plantillas/pie.php';
 ?>

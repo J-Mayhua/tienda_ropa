@@ -11,8 +11,13 @@ require_once __DIR__ . '/../plantillas/cabecera.php';
 <section class="about-banner">
     <div class="about-overlay"></div>
     <div class="about-content">
-        <h1>Nuestra Historia</h1>
-        <p>Descubre quiénes somos y cómo transformamos la moda</p>
+        <span class="banner-sub">StyleHub Co.</span>
+        <h1>Nuestra historia</h1>
+        <p>Confeccionando confianza, estilo y momentos inolvidables desde 2015.</p>
+        <div class="banner-scroll">
+            <span class="scroll-text">Descubrir</span>
+            <div class="scroll-line"></div>
+        </div>
     </div>
 </section>
 
@@ -21,38 +26,55 @@ require_once __DIR__ . '/../plantillas/cabecera.php';
     <div class="container">
         <div class="section-grid">
             <div class="content-col" data-aos="fade-right">
-                <span class="section-badge">StyleHub desde 2015</span>
-                <h2 class="section-title">Una pasión por la moda que comenzó con un sueño</h2>
-                <p class="section-text">Nacimos en un pequeño taller en el corazón de Lima, con la visión de crear prendas que combinen calidad, estilo y accesibilidad. Lo que comenzó como un emprendimiento familiar, hoy se ha convertido en una de las marcas de moda más reconocidas del país.</p>
-                <p class="section-text">Nuestro compromiso con la calidad y la innovación nos ha permitido crecer y expandirnos, sin perder esa esencia y dedicación con la que confeccionamos cada pieza desde el primer día.</p>
+                <h2 class="section-title">Una pasión que comenzó con un sueño</h2>
+                <p class="section-text">Nacimos con la visión de crear prendas que combinen diseño contemporáneo, materiales premium y sostenibilidad. Cada una de nuestras piezas cuenta una historia de respeto, esfuerzo y excelencia artesanal.</p>
 
                 <div class="mission-values">
                     <div class="mission-card">
-                        <div class="mission-icon">
-                            <i class="fas fa-bullseye"></i>
-                        </div>
-                        <h3>Nuestra Misión</h3>
-                        <p>Inspirar confianza y expresión individual a través de prendas excepcionales, sostenibles y accesibles para todos.</p>
+                        <div class="mission-icon"><i class="fas fa-bullseye"></i></div>
+                        <h3>Misión</h3>
+                        <p>Inspirar autenticidad a través de colecciones exclusivas, diseñadas éticamente.</p>
                     </div>
-
                     <div class="mission-card">
-                        <div class="mission-icon">
-                            <i class="fas fa-eye"></i>
-                        </div>
-                        <h3>Nuestra Visión</h3>
-                        <p>Ser la marca de moda líder que redefine la experiencia de compra, conectando tendencias con valores y sostenibilidad.</p>
+                        <div class="mission-icon"><i class="fas fa-eye"></i></div>
+                        <h3>Visión</h3>
+                        <p>Ser el referente de moda sostenible y de vanguardia en toda la región.</p>
                     </div>
                 </div>
             </div>
 
             <div class="image-col" data-aos="fade-left">
                 <div class="about-image-container">
-                    <img src="../publico/recursos/imagenes/nosotros/tienda-historia.jpg" alt="Historia de StyleHub" class="about-image">
+                    <img src="https://images.unsplash.com/photo-1558769132-cb1aea458c5e?auto=format&fit=crop&w=800&q=80" alt="Historia" class="about-image">
                     <div class="experience-badge">
                         <span class="years">10</span>
-                        <span class="text">Años de<br>Experiencia</span>
+                        <span class="text">Años de<br>pasión</span>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Stats Ribbon -->
+<section class="stats-section">
+    <div class="container">
+        <div class="stats-grid">
+            <div class="stat-item">
+                <div class="stat-number">15K+</div>
+                <div class="stat-label">Clientes satisfechos</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">50K+</div>
+                <div class="stat-label">Prendas vendidas</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">100%</div>
+                <div class="stat-label">Sostenible</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">10+</div>
+                <div class="stat-label">Tiendas físicas</div>
             </div>
         </div>
     </div>
@@ -62,42 +84,38 @@ require_once __DIR__ . '/../plantillas/cabecera.php';
 <section class="about-section values-section">
     <div class="container">
         <div class="section-header" data-aos="fade-up">
-            <span class="section-badge">Qué nos define</span>
-            <h2 class="section-title">Nuestros Valores</h2>
-            <p class="section-subtitle">Los principios que guían cada decisión que tomamos</p>
+            <h2 class="section-title">Nuestros valores</h2>
+            <p class="section-subtitle">Los principios que guían cada decisión en StyleHub, de la tela al mostrador.</p>
         </div>
 
         <div class="values-grid">
             <div class="value-card" data-aos="fade-up" data-aos-delay="100">
-                <div class="value-icon">
-                    <i class="fas fa-leaf"></i>
+                <div class="value-icon"><i class="fas fa-leaf"></i></div>
+                <div>
+                    <h3>Sostenibilidad</h3>
+                    <p>Materiales ecológicos y procesos limpios que reducen nuestra huella ambiental.</p>
                 </div>
-                <h3>Sostenibilidad</h3>
-                <p>Compromiso con prácticas responsables con el medio ambiente en toda nuestra cadena de producción.</p>
             </div>
-
+            <div class="value-card" data-aos="fade-up" data-aos-delay="150">
+                <div class="value-icon"><i class="fas fa-heart"></i></div>
+                <div>
+                    <h3>Pasión</h3>
+                    <p>Amamos lo que hacemos, buscando siempre superar las expectativas de nuestra comunidad.</p>
+                </div>
+            </div>
             <div class="value-card" data-aos="fade-up" data-aos-delay="200">
-                <div class="value-icon">
-                    <i class="fas fa-heart"></i>
+                <div class="value-icon"><i class="fas fa-gem"></i></div>
+                <div>
+                    <h3>Calidad</h3>
+                    <p>Textiles premium de alta durabilidad para garantizar prendas que perduran.</p>
                 </div>
-                <h3>Pasión</h3>
-                <p>Amamos lo que hacemos y ponemos nuestro corazón en cada prenda que diseñamos.</p>
             </div>
-
-            <div class="value-card" data-aos="fade-up" data-aos-delay="300">
-                <div class="value-icon">
-                    <i class="fas fa-gem"></i>
+            <div class="value-card" data-aos="fade-up" data-aos-delay="250">
+                <div class="value-icon"><i class="fas fa-handshake"></i></div>
+                <div>
+                    <h3>Integridad</h3>
+                    <p>Trato justo, transparente e igualitario con colaboradores y clientes.</p>
                 </div>
-                <h3>Calidad</h3>
-                <p>Buscamos la excelencia en cada detalle, desde la selección de materiales hasta el acabado final.</p>
-            </div>
-
-            <div class="value-card" data-aos="fade-up" data-aos-delay="400">
-                <div class="value-icon">
-                    <i class="fas fa-handshake"></i>
-                </div>
-                <h3>Integridad</h3>
-                <p>Transparencia y honestidad en cada paso, con nuestros clientes, proveedores y colaboradores.</p>
             </div>
         </div>
     </div>
@@ -107,65 +125,64 @@ require_once __DIR__ . '/../plantillas/cabecera.php';
 <section class="about-section team-section">
     <div class="container">
         <div class="section-header" data-aos="fade-up">
-            <span class="section-badge">Las mentes creativas</span>
-            <h2 class="section-title">Nuestro Equipo</h2>
-            <p class="section-subtitle">Talento y pasión detrás de cada creación</p>
+            <h2 class="section-title">Nuestro equipo</h2>
+            <p class="section-subtitle">Profesionales unidos por la innovación, el detalle y la excelencia textil.</p>
         </div>
 
         <div class="team-grid">
             <div class="team-card" data-aos="fade-up" data-aos-delay="100">
                 <div class="team-image-container">
-                    <img src="../publico/recursos/imagenes/nosotros/team-1.jpg" alt="Diseñador" class="team-image">
+                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=600&h=600&q=80" alt="Carlos Mendoza" class="team-image">
                     <div class="team-social">
-                        <a href="#" class="team-social-link"><i class="fab fa-linkedin"></i></a>
+                        <a href="#" class="team-social-link"><i class="fab fa-linkedin-in"></i></a>
                         <a href="#" class="team-social-link"><i class="fab fa-instagram"></i></a>
                     </div>
                 </div>
                 <div class="team-info">
                     <h3>Carlos Mendoza</h3>
-                    <span>Director Creativo</span>
+                    <span>Director creativo</span>
                 </div>
             </div>
 
-            <div class="team-card" data-aos="fade-up" data-aos-delay="200">
+            <div class="team-card" data-aos="fade-up" data-aos-delay="150">
                 <div class="team-image-container">
-                    <img src="../publico/recursos/imagenes/nosotros/team-2.jpg" alt="Diseñadora" class="team-image">
+                    <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=600&h=600&q=80" alt="María Sánchez" class="team-image">
                     <div class="team-social">
-                        <a href="#" class="team-social-link"><i class="fab fa-linkedin"></i></a>
+                        <a href="#" class="team-social-link"><i class="fab fa-linkedin-in"></i></a>
                         <a href="#" class="team-social-link"><i class="fab fa-instagram"></i></a>
                     </div>
                 </div>
                 <div class="team-info">
                     <h3>María Sánchez</h3>
-                    <span>Diseñadora Principal</span>
+                    <span>Diseñadora principal</span>
                 </div>
             </div>
 
-            <div class="team-card" data-aos="fade-up" data-aos-delay="300">
+            <div class="team-card" data-aos="fade-up" data-aos-delay="200">
                 <div class="team-image-container">
-                    <img src="../publico/recursos/imagenes/nosotros/team-3.jpg" alt="Gerente" class="team-image">
+                    <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=600&h=600&q=80" alt="Luis Torres" class="team-image">
                     <div class="team-social">
-                        <a href="#" class="team-social-link"><i class="fab fa-linkedin"></i></a>
+                        <a href="#" class="team-social-link"><i class="fab fa-linkedin-in"></i></a>
                         <a href="#" class="team-social-link"><i class="fab fa-instagram"></i></a>
                     </div>
                 </div>
                 <div class="team-info">
                     <h3>Luis Torres</h3>
-                    <span>Gerente de Producción</span>
+                    <span>Director de producción</span>
                 </div>
             </div>
 
-            <div class="team-card" data-aos="fade-up" data-aos-delay="400">
+            <div class="team-card" data-aos="fade-up" data-aos-delay="250">
                 <div class="team-image-container">
-                    <img src="../publico/recursos/imagenes/nosotros/team-4.jpg" alt="Marketing" class="team-image">
+                    <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=600&h=600&q=80" alt="Ana Díaz" class="team-image">
                     <div class="team-social">
-                        <a href="#" class="team-social-link"><i class="fab fa-linkedin"></i></a>
+                        <a href="#" class="team-social-link"><i class="fab fa-linkedin-in"></i></a>
                         <a href="#" class="team-social-link"><i class="fab fa-instagram"></i></a>
                     </div>
                 </div>
                 <div class="team-info">
                     <h3>Ana Díaz</h3>
-                    <span>Directora de Marketing</span>
+                    <span>Directora de marketing</span>
                 </div>
             </div>
         </div>
@@ -176,26 +193,149 @@ require_once __DIR__ . '/../plantillas/cabecera.php';
 <section class="about-section stores-section">
     <div class="container">
         <div class="section-header" data-aos="fade-up">
-            <span class="section-badge">Dónde encontrarnos</span>
-            <h2 class="section-title">Nuestras Tiendas</h2>
-            <p class="section-subtitle">Visítanos y vive la experiencia StyleHub</p>
+            <h2 class="section-title">Nuestras tiendas</h2>
+            <p class="section-subtitle">Vive una experiencia de compra premium y asesoría personalizada en nuestros locales físicos.</p>
         </div>
 
+        <div class="stores-grid">
+            <div class="store-card" data-aos="fade-up" data-aos-delay="100">
+                <div class="store-image-wrapper">
+                    <img src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=600&h=400&q=80" alt="Tienda Miraflores" class="store-image">
+                    <span class="store-tag">Concept store</span>
+                </div>
+                <div class="store-details">
+                    <h3>Miraflores Flagship</h3>
+                    <ul class="store-info-list">
+                        <li><i class="fas fa-map-marker-alt"></i> Av. Larco 456, Miraflores, Lima</li>
+                        <li><i class="fas fa-clock"></i> Lun - Sáb: 10:00 AM - 9:00 PM</li>
+                        <li><i class="fas fa-phone-alt"></i> (01) 445-8930</li>
+                    </ul>
+                    <a href="https://maps.google.com" target="_blank" class="store-btn">
+                        <span>Ver en Google Maps</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="store-card" data-aos="fade-up" data-aos-delay="150">
+                <div class="store-image-wrapper">
+                    <img src="https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?auto=format&fit=crop&w=600&h=400&q=80" alt="Tienda San Isidro" class="store-image">
+                    <span class="store-tag">Atelier premium</span>
+                </div>
+                <div class="store-details">
+                    <h3>San Isidro Studio</h3>
+                    <ul class="store-info-list">
+                        <li><i class="fas fa-map-marker-alt"></i> Av. Camino Real 782, San Isidro</li>
+                        <li><i class="fas fa-clock"></i> Lun - Sáb: 10:00 AM - 8:00 PM</li>
+                        <li><i class="fas fa-phone-alt"></i> (01) 221-5044</li>
+                    </ul>
+                    <a href="https://maps.google.com" target="_blank" class="store-btn">
+                        <span>Ver en Google Maps</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="store-card" data-aos="fade-up" data-aos-delay="200">
+                <div class="store-image-wrapper">
+                    <img src="https://images.unsplash.com/photo-1582037919819-1a4a4000b0f0?auto=format&fit=crop&w=600&h=400&q=80" alt="Tienda Arequipa" class="store-image">
+                    <span class="store-tag">Showroom</span>
+                </div>
+                <div class="store-details">
+                    <h3>Arequipa Imperial</h3>
+                    <ul class="store-info-list">
+                        <li><i class="fas fa-map-marker-alt"></i> Calle Mercaderes 124, Arequipa</li>
+                        <li><i class="fas fa-clock"></i> Lun - Dom: 11:00 AM - 8:30 PM</li>
+                        <li><i class="fas fa-phone-alt"></i> (054) 283-910</li>
+                    </ul>
+                    <a href="https://maps.google.com" target="_blank" class="store-btn">
+                        <span>Ver en Google Maps</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
 </section>
 
 <!-- Testimonios -->
 <section class="about-section testimonials-section">
     <div class="container">
         <div class="section-header" data-aos="fade-up">
-            <span class="section-badge">Lo que dicen de nosotros</span>
-            <h2 class="section-title">Testimonios</h2>
-            <p class="section-subtitle">La satisfacción de nuestros clientes es nuestra mejor recompensa</p>
+            <h2 class="section-title">Lo que dicen de nosotros</h2>
+            <p class="section-subtitle">Nuestros clientes son los verdaderos embajadores de la marca.</p>
         </div>
 
+        <div class="testimonials-grid">
+            <div class="testimonial-card" data-aos="fade-up" data-aos-delay="100">
+                <div class="testimonial-stars">
+                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                </div>
+                <p class="testimonial-text">"La calidad de la tela es espectacular y el calce es perfecto. Es mi tienda favorita por su diseño elegante y su enfoque ecológico."</p>
+                <div class="testimonial-user">
+                    <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=150&h=150&q=80" alt="Sofia R." class="testimonial-avatar">
+                    <div class="testimonial-meta">
+                        <h4>Sofía Rodríguez</h4>
+                        <span>Cliente verificado <i class="fas fa-check-circle verified-icon"></i></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="testimonial-card" data-aos="fade-up" data-aos-delay="150">
+                <div class="testimonial-stars">
+                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                </div>
+                <p class="testimonial-text">"He comprado trajes y camisas casuales. Los acabados, la textura y los colores son incomparables. Destaco la atención personalizada en San Isidro."</p>
+                <div class="testimonial-user">
+                    <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=150&h=150&q=80" alt="Mateo G." class="testimonial-avatar">
+                    <div class="testimonial-meta">
+                        <h4>Mateo Guerrero</h4>
+                        <span>Cliente verificado <i class="fas fa-check-circle verified-icon"></i></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="testimonial-card" data-aos="fade-up" data-aos-delay="200">
+                <div class="testimonial-stars">
+                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                </div>
+                <p class="testimonial-text">"Prendas atemporales que combinan con todo y no se desgastan. Su compromiso real con prácticas éticas de confección me hace volver siempre."</p>
+                <div class="testimonial-user">
+                    <img src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=150&h=150&q=80" alt="Valeria P." class="testimonial-avatar">
+                    <div class="testimonial-meta">
+                        <h4>Valeria Pezo</h4>
+                        <span>Cliente verificado <i class="fas fa-check-circle verified-icon"></i></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </section>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
+<!-- Call to Action -->
+<section class="about-cta">
+    <div class="cta-overlay"></div>
+    <div class="container cta-content" data-aos="zoom-in">
+        <h2>Viste con consciencia y estilo</h2>
+        <p>Explora nuestras nuevas colecciones atemporales y descubre el calce perfecto para ti.</p>
+        <a href="/Tienda_ropa/publico/index.php" class="cta-btn">
+            <span>Ver catálogo</span>
+            <i class="fas fa-shopping-bag"></i>
+        </a>
+    </div>
+</section>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
-<script src="../publico/recursos/js/nosotros.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        if (typeof AOS !== 'undefined') {
+            AOS.init({
+                duration: 700,
+                once: true,
+                offset: 40
+            });
+        }
+    });
+</script>
 
 <?php require_once __DIR__ . '/../plantillas/pie.php'; ?>

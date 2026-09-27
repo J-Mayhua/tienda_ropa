@@ -1,0 +1,27 @@
+/* ============================================================
+   StyleHub Co. — Variables de marca
+   Único lugar donde se definen colores, tipografía y tokens.
+   Debe cargarse ANTES que cualquier otro CSS del sitio.
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Work+Sans:wght@400;500;600&display=swap');
+
+:root {
+    --stone: #EDEAE1;
+    --stone-deep: #E2DDCF;
+    --ink: #1E231C;
+    --ink-soft: #3A4136;
+    --sage: #5B6B4E;
+    --brass: #A9793C;
+    --brass-soft: #C9A97A;
+    --rust: #A9452F;
+    --line: #D6D0BF;
+    --paper: #FBFAF6;
+
+    --font-display: 'Fraunces', Georgia, serif;
+    --font-body: 'Work Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+
+    --max-width: 1180px;
+    --gap: clamp(1.5rem, 3vw, 3rem);
+    --shadow-lg: 0 20px 45px rgba(30, 35, 28, 0.14);
+}

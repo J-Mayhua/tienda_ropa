@@ -1,2 +1,2 @@
 <?php
-echo 'La función PHP sí se ejecuta';
+require_once __DIR__ . '/../publico/index.php';

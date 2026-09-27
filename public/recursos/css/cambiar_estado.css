@@ -1,0 +1,47 @@
+/* CAMBIAR ESTADO DE PEDIDO — StyleHub Admin
+   No redefinir .contenedor aquí (ver nota en gestionar_usuarios.css).
+   .form-group, .form-actions, .btn, .btn-secundario ya están
+   definidos globalmente en estilos.css. */
+
+.contenedor--angosto {
+    max-width: 560px;
+}
+
+.contenedor h2 {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 1.5rem;
+    color: var(--ink);
+    margin: 0 0 1.5rem;
+}
+
+.form-card {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-left: 4px solid var(--brass);
+    border-radius: 10px;
+    padding: 2rem;
+    box-shadow: var(--shadow-lg);
+}
+
+.form-card .form-group label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.form-card select {
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%233A4136' stroke-width='1.6' fill='none' fill-rule='evenodd' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    padding-right: 2.5rem;
+    cursor: pointer;
+}
+
+@media (max-width: 480px) {
+    .form-card {
+        padding: 1.5rem;
+    }
+}

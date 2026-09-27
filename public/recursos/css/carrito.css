@@ -1,0 +1,195 @@
+/* Estilos para el carrito — StyleHub
+   Usa las variables de variables.css (cargado antes en cabecera.php),
+   siguiendo el mismo sistema visual que "Gestionar Usuarios". */
+
+/* No redefinir .contenedor aquí: ya se define globalmente en
+   estilos.css / pie.css y controla el espaciado respecto al footer.
+   Como esta página termina en un bloque de total + botón que necesita
+   más aire antes del pie, agregamos un modificador propio en vez de
+   tocar la clase compartida (mismo patrón que .contenedor--angosto
+   en usuarios.css). */
+.contenedor--carrito {
+    padding-bottom: 3.5rem;
+}
+
+/* ============================================================
+   Estado vacío
+   ============================================================ */
+.mensaje-carrito-vacio {
+    text-align: center;
+    font-family: var(--font-body);
+    font-size: 1.15rem;
+    color: var(--ink-soft);
+    padding: 4rem 1rem;
+}
+
+/* ============================================================
+   Encabezado
+   ============================================================ */
+.titulo-carrito {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 1.9rem;
+    color: var(--ink);
+    text-align: center;
+    margin: 0 0 2rem;
+}
+
+/* ============================================================
+   Lista de productos
+   ============================================================ */
+.productos-carrito {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.producto-carrito {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 1.1rem;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    transition: border-color 200ms ease;
+}
+
+.producto-carrito:hover {
+    border-color: var(--ink-soft);
+}
+
+.producto-img {
+    width: 96px;
+    height: 96px;
+    object-fit: cover;
+    border: 1px solid var(--line);
+    flex-shrink: 0;
+}
+
+.producto-info {
+    flex-grow: 1;
+    font-family: var(--font-body);
+    color: var(--ink);
+}
+
+.producto-info h2 {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 1.15rem;
+    margin: 0 0 0.35rem;
+    color: var(--ink);
+}
+
+.producto-info p {
+    margin: 0.2rem 0;
+    font-size: 0.9rem;
+    color: var(--ink-soft);
+}
+
+.producto-info p:last-of-type {
+    font-weight: 600;
+    color: var(--ink);
+}
+
+/* Formularios de acción dentro de las tarjetas de producto y del
+   resumen: son botones inline, no deben verse como una "tarjeta de
+   formulario" genérica (.form-card trae fondo/sombra pensados para
+   logins, no aplica aquí). */
+.carrito-form-accion {
+    display: inline-block;
+    margin-top: 0.6rem;
+}
+
+/* ============================================================
+   Resumen y total
+   ============================================================ */
+.total-carrito {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 1.1rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--ink);
+}
+
+.total-carrito h3 {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 1.35rem;
+    color: var(--ink);
+    margin: 0;
+}
+
+.total-carrito__acciones {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.total-carrito__acciones .carrito-form-accion {
+    margin-top: 0;
+}
+
+/* Botón principal de checkout: color de marca (--sage), sin depender
+   del look genérico de .form-card. */
+.btn-finalizar-compra {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.85rem 2rem;
+    background: var(--sage);
+    color: var(--paper);
+    border: 1px solid var(--sage);
+    border-radius: 0;
+    box-shadow: none;
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 0.95rem;
+    letter-spacing: 0.02em;
+    cursor: pointer;
+    transition: background 200ms ease, border-color 200ms ease;
+}
+
+.btn-finalizar-compra:hover {
+    background: #4a5a3f;
+    border-color: #4a5a3f;
+}
+
+.btn-finalizar-compra:focus-visible {
+    outline: 2px solid var(--sage);
+    outline-offset: 2px;
+}
+
+/* ============================================================
+   Responsive
+   ============================================================ */
+@media (max-width: 700px) {
+    .producto-carrito {
+        flex-direction: column;
+        align-items: flex-start;
+        text-align: left;
+    }
+
+    .producto-img {
+        width: 100%;
+        height: 180px;
+    }
+
+    .total-carrito {
+        align-items: stretch;
+    }
+
+    .total-carrito h3 {
+        text-align: right;
+    }
+
+    .total-carrito__acciones {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .btn-finalizar-compra {
+        width: 100%;
+    }
+}

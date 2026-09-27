@@ -1,0 +1,213 @@
+/* GESTIONAR USUARIOS — StyleHub Admin
+   Usa las variables de variables.css (cargado antes en cabecera.php) */
+
+/* No redefinir .contenedor aquí: esa clase ya es compartida
+   globalmente (header, footer, resto de páginas) y se define en
+   estilos.css / pie.css. Redefinirla en un CSS de página específica
+   provoca que la última hoja de estilos cargada (pie.css, al final)
+   le gane en la cascada y se pierda el padding-bottom, dejando el
+   contenido pegado al footer.
+   Aquí solo agregamos un modificador de ancho para esta tabla. */
+.contenedor--angosto {
+    max-width: 1000px;
+}
+
+.contenedor h2 {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 1.7rem;
+    color: var(--ink);
+    margin: 0 0 1.25rem;
+    text-align: center;
+}
+
+/* ============================================================
+   Botones (compartidos con el resto del admin)
+   ============================================================ */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    padding: 0.7rem 1.5rem;
+    background: var(--brass);
+    color: var(--paper);
+    border: 1px solid var(--brass);
+    font-family: var(--font-body);
+    font-weight: 500;
+    font-size: 0.92rem;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background 200ms ease, border-color 200ms ease;
+}
+
+.btn:hover {
+    background: var(--brass-soft);
+    border-color: var(--brass-soft);
+}
+
+.btn-secundario {
+    background: transparent;
+    color: var(--ink);
+    border: 1px solid var(--line);
+    margin-bottom: 1.75rem;
+}
+
+.btn-secundario:hover {
+    background: var(--stone);
+    border-color: var(--ink-soft);
+}
+
+.btn-sm {
+    padding: 0.4rem 0.85rem;
+    font-size: 0.82rem;
+}
+
+.btn-peligro {
+    background: var(--rust);
+    border-color: var(--rust);
+}
+
+.btn-peligro:hover {
+    background: #8f3a27;
+    border-color: #8f3a27;
+}
+
+.btn:focus-visible {
+    outline: 2px solid var(--sage);
+    outline-offset: 2px;
+}
+
+/* ============================================================
+   Tabla
+   ============================================================ */
+.tabla-envoltorio {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    overflow-x: auto;
+}
+
+.tabla {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: var(--font-body);
+    font-size: 0.92rem;
+}
+
+.tabla thead th {
+    text-align: left;
+    font-size: 0.76rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    padding: 0.9rem 1.1rem;
+    border-bottom: 2px solid var(--ink);
+    white-space: nowrap;
+}
+
+.tabla tbody td {
+    padding: 0.85rem 1.1rem;
+    border-bottom: 1px solid var(--line);
+    color: var(--ink);
+    vertical-align: middle;
+}
+
+.tabla tbody tr:hover {
+    background: var(--stone);
+}
+
+.tabla tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.tabla__vacio {
+    text-align: center;
+    color: var(--ink-soft);
+    padding: 2.5rem 1rem;
+}
+
+.tabla__acciones {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+/* ============================================================
+   Badge de rol
+   ============================================================ */
+.badge-rol {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.25rem 0.7rem;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    border-radius: 3px;
+}
+
+.badge-rol--admin {
+    background: rgba(91, 107, 78, 0.14);
+    color: var(--sage);
+}
+
+.badge-rol--cliente {
+    background: var(--stone);
+    color: var(--ink-soft);
+}
+
+/* ============================================================
+   Responsive — tabla apilada en pantallas chicas
+   ============================================================ */
+@media (max-width: 700px) {
+    .tabla thead {
+        display: none;
+    }
+
+    /* El selector global `table { min-width: 600px; }` de estilos.css
+       sigue aplicando aquí (no se "reemplaza" solo por poner display:block
+       en otro archivo). Hay que anularlo explícitamente o la tabla no
+       puede apilarse de verdad en pantallas angostas. */
+    .tabla,
+    .tabla tbody,
+    .tabla tr,
+    .tabla td {
+        display: block;
+        width: 100%;
+        min-width: 0;
+    }
+
+    .tabla-envoltorio {
+        overflow-x: visible;
+    }
+
+    .tabla tbody tr {
+        border-bottom: 1px solid var(--line);
+        padding: 0.9rem 1.1rem;
+    }
+
+    .tabla tbody td {
+        border-bottom: none;
+        padding: 0.35rem 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 1rem;
+        text-align: right;
+    }
+
+    .tabla tbody td::before {
+        content: attr(data-label);
+        font-size: 0.72rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        color: var(--ink-soft);
+        text-align: left;
+        flex-shrink: 0;
+    }
+
+    .tabla__acciones {
+        justify-content: flex-end;
+    }
+}

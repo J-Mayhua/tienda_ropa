@@ -1,0 +1,192 @@
+/* PANEL DE ADMINISTRACIÓN — STYLEHUB
+   Usa las variables de variables.css (cargado antes en cabecera.php) */
+
+.contenedor-principal {
+    min-height: calc(100vh - 4rem);
+    background: var(--stone);
+    padding: clamp(1.5rem, 4vw, 2.5rem) 0 3rem;
+}
+
+.contenedor {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 0 clamp(1.25rem, 4vw, 2.5rem);
+}
+
+/* ============================================================
+   Tarjeta de bienvenida
+   ============================================================ */
+.tarjeta-bienvenida {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    padding: 1.5rem 1.75rem;
+    margin-bottom: 1.75rem;
+}
+
+.avatar-iniciales {
+    flex-shrink: 0;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--ink);
+    color: var(--paper);
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 1rem;
+    letter-spacing: 0.02em;
+}
+
+.avatar-iniciales--lg {
+    width: 60px;
+    height: 60px;
+    font-size: 1.2rem;
+    background: var(--brass);
+}
+
+.tarjeta-bienvenida__info h2 {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 1.5rem;
+    color: var(--ink);
+    margin: 0 0 0.35rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+}
+
+.tarjeta-bienvenida__info p {
+    font-size: 0.92rem;
+    color: var(--ink-soft);
+    margin: 0;
+}
+
+.badge-rol {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.25rem 0.7rem;
+    font-family: var(--font-body);
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    border-radius: 3px;
+}
+
+.badge-rol--admin {
+    background: rgba(91, 107, 78, 0.14);
+    color: var(--sage);
+}
+
+/* ============================================================
+   Resumen — tarjetas de métricas
+   ============================================================ */
+.resumen-admin {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem;
+}
+
+.resumen-card {
+    display: flex;
+    flex-direction: column;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    padding: 1.5rem;
+    transition: border-color 200ms ease;
+}
+
+.resumen-card:hover {
+    border-color: var(--brass);
+}
+
+.resumen-card__icono {
+    width: 42px;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--stone);
+    color: var(--brass);
+    font-size: 1.05rem;
+    margin-bottom: 1rem;
+}
+
+.resumen-card__numero {
+    display: block;
+    font-family: var(--font-display);
+    font-size: 2rem;
+    font-weight: 500;
+    color: var(--ink);
+    line-height: 1;
+}
+
+.resumen-card__label {
+    display: block;
+    font-size: 0.85rem;
+    color: var(--ink-soft);
+    margin-top: 0.35rem;
+}
+
+.resumen-card__link {
+    margin-top: 1.25rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--line);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 0.88rem;
+    font-weight: 500;
+    color: var(--ink);
+    text-decoration: none;
+    transition: color 200ms ease;
+}
+
+.resumen-card__link:hover {
+    color: var(--brass);
+}
+
+.resumen-card__link i {
+    font-size: 0.78rem;
+    transition: transform 200ms ease;
+}
+
+.resumen-card__link:hover i {
+    transform: translateX(3px);
+}
+
+/* ---------- Foco visible / accesibilidad ---------- */
+.resumen-card__link:focus-visible {
+    outline: 2px solid var(--sage);
+    outline-offset: 2px;
+}
+
+/* ============================================================
+   Responsive
+   ============================================================ */
+@media (max-width: 900px) {
+    .resumen-admin {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (max-width: 600px) {
+    .tarjeta-bienvenida {
+        flex-direction: column;
+        align-items: flex-start;
+        text-align: left;
+    }
+
+    .resumen-admin {
+        grid-template-columns: 1fr;
+    }
+}
+.tarjeta-bienvenida__accion {
+    margin-left: auto;
+    flex-shrink: 0;
+}

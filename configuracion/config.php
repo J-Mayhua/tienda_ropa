@@ -1,8 +1,8 @@
 <?php
 // configuracion/config.php
 
-// Evita que avisos o errores se impriman antes de iniciar la sesión.
-// Los detalles quedan en los logs del servidor.
+// Evita mostrar errores al visitante.
+// Los detalles técnicos quedan en los logs del servidor.
 ini_set('display_errors', '0');
 ini_set('display_startup_errors', '0');
 ini_set('log_errors', '1');
@@ -30,9 +30,40 @@ $leerVariable = static function (string $nombre): ?string {
 };
 
 $appEnv = strtolower($leerVariable('APP_ENV') ?? '');
-$esProduccion = in_array($appEnv, ['production', 'prod'], true);
+$enVercel = ($leerVariable('VERCEL') ?? '') === '1';
 
-// Variables necesarias para la conexión.
+$esProduccion = $enVercel
+    || in_array($appEnv, ['production', 'prod'], true);
+
+/*
+ * Vercel sirve los archivos ubicados en /public desde la raíz del dominio.
+ * Por eso, public/recursos/css/... se solicita como /recursos/css/...
+ *
+ * En XAMPP, el proyecto se encuentra bajo /Tienda_ropa.
+ */
+if (!defined('ASSET_BASE_URL')) {
+    define(
+        'ASSET_BASE_URL',
+        $enVercel
+            ? '/recursos'
+            : '/Tienda_ropa/publico/recursos'
+    );
+}
+
+/*
+ * En Vercel, vercel.json envía la ruta / a /api/index.php.
+ * En XAMPP, se usa la ruta local del proyecto.
+ */
+if (!defined('APP_ENTRY_URL')) {
+    define(
+        'APP_ENTRY_URL',
+        $enVercel
+            ? '/'
+            : '/Tienda_ropa/publico/index.php'
+    );
+}
+
+// Variables necesarias para la conexión a la base de datos.
 $variablesDb = [
     'DB_HOST',
     'DB_PORT',
@@ -60,7 +91,7 @@ foreach ($variablesDb as $variableDb) {
     }
 }
 
-// Comprueba que el puerto sea válido.
+// Comprueba que el puerto de base de datos sea válido.
 $puertoDb = filter_var(
     DB_PORT,
     FILTER_VALIDATE_INT,
@@ -74,7 +105,7 @@ if ($puertoDb === false) {
     exit('La configuración del servidor no es válida.');
 }
 
-// Configura e inicia la sesión antes de cualquier salida.
+// Inicia la sesión antes de que se envíe contenido al navegador.
 if (session_status() === PHP_SESSION_NONE) {
     session_name('tienda_ropa_session');
 
@@ -97,38 +128,6 @@ if (session_status() === PHP_SESSION_NONE) {
 $db = null;
 
 if ($appEnv !== 'testing') {
-    /*
-     * Diagnóstico temporal de red.
-     * Busca las líneas DB_DIAG en los logs de Vercel.
-     * No registra usuario, contraseña ni otros secretos.
-     */
-    $ipResuelta = gethostbyname(DB_HOST);
-
-    if ($ipResuelta === DB_HOST) {
-        error_log('DB_DIAG DNS_FAIL: no se pudo resolver el host de MySQL.');
-    } else {
-        error_log("DB_DIAG DNS_OK: host resuelto a {$ipResuelta}.");
-
-        $errno = 0;
-        $errstr = '';
-
-        $socket = @stream_socket_client(
-            'tcp://' . DB_HOST . ':' . $puertoDb,
-            $errno,
-            $errstr,
-            5
-        );
-
-        if ($socket !== false) {
-            error_log('DB_DIAG TCP_OK: se alcanzó el host y el puerto de MySQL.');
-            fclose($socket);
-        } else {
-            error_log(
-                "DB_DIAG TCP_FAIL: errno={$errno}; error={$errstr}"
-            );
-        }
-    }
-
     $dsn = 'mysql:host=' . DB_HOST
          . ';port=' . $puertoDb
          . ';dbname=' . DB_NAME
@@ -142,7 +141,7 @@ if ($appEnv !== 'testing') {
     ];
 
     // XAMPP local: DB_SSL=false.
-    // Aiven en Vercel: DB_SSL=true y se requiere certificados/ca.pem.
+    // Aiven en Vercel: DB_SSL=true y certificados/ca.pem.
     $usarSsl = strtolower($leerVariable('DB_SSL') ?? 'false') === 'true';
 
     if ($usarSsl) {
@@ -155,7 +154,6 @@ if ($appEnv !== 'testing') {
             exit('No se pudo establecer la conexión segura con la base de datos.');
         }
 
-        // PHP 8.5 o posterior usa los nombres nuevos de las constantes.
         if (PHP_VERSION_ID >= 80500) {
             $opciones[\Pdo\Mysql::ATTR_SSL_CA] = $caPath;
             $opciones[\Pdo\Mysql::ATTR_SSL_VERIFY_SERVER_CERT] = true;
@@ -168,7 +166,7 @@ if ($appEnv !== 'testing') {
     try {
         $db = new PDO($dsn, DB_USER, DB_PASSWORD, $opciones);
     } catch (PDOException $e) {
-        // El detalle técnico queda en los logs, no se muestra al visitante.
+        // El detalle técnico se registra en los logs, no se muestra al visitante.
         error_log('Error de conexión MySQL: ' . $e->getMessage());
 
         http_response_code(500);

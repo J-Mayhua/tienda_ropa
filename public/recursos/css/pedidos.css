@@ -1,0 +1,162 @@
+/* MIS PEDIDOS — StyleHub
+   Usa las variables de variables.css (cargado antes en cabecera.php).
+   No redefinir .contenedor aquí: se define globalmente en estilos.css /
+   pie.css y controla el espaciado respecto al footer (mismo patrón que
+   .contenedor--angosto en usuarios.css y .contenedor--carrito en
+   carrito.css). */
+.contenedor--pedidos {
+    padding-bottom: 3.5rem;
+}
+
+/* ============================================================
+   Encabezado
+   ============================================================ */
+.titulo-pedidos {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 1.9rem;
+    color: var(--ink);
+    text-align: center;
+    margin: 0 0 2rem;
+}
+
+/* ============================================================
+   Lista de pedidos
+   ============================================================ */
+.lista-pedidos {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.pedido-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    padding: 1.25rem 1.5rem;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    transition: border-color 200ms ease;
+}
+
+.pedido-item:hover {
+    border-color: var(--ink-soft);
+}
+
+.pedido-info {
+    flex-grow: 1;
+    font-family: var(--font-body);
+    color: var(--ink);
+}
+
+.pedido-info__cabecera {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.5rem;
+}
+
+.pedido-info h3 {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 1.1rem;
+    color: var(--ink);
+    margin: 0;
+}
+
+.pedido-info p {
+    margin: 0.2rem 0;
+    font-size: 0.9rem;
+    color: var(--ink-soft);
+}
+
+.pedido-info p strong {
+    color: var(--ink);
+    font-weight: 600;
+}
+
+/* ============================================================
+   Badge de estado del pedido
+   (mismo patrón visual que .badge-rol en usuarios.css)
+   ============================================================ */
+.badge-estado {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.22rem 0.65rem;
+    font-family: var(--font-body);
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    border-radius: 3px;
+}
+
+.badge-estado--pendiente {
+    background: rgba(180, 140, 60, 0.14);
+    color: var(--brass);
+}
+
+.badge-estado--completado {
+    background: rgba(91, 107, 78, 0.14);
+    color: var(--sage);
+}
+
+.badge-estado--cancelado {
+    background: rgba(143, 58, 39, 0.12);
+    color: var(--rust);
+}
+
+.badge-estado--enviado,
+.badge-estado--en_proceso {
+    background: var(--stone);
+    color: var(--ink-soft);
+}
+
+/* ============================================================
+   Acciones
+   ============================================================ */
+.pedido-acciones {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    flex-shrink: 0;
+}
+
+.pedido-form-accion {
+    display: inline-block;
+}
+
+/* ============================================================
+   Estado vacío
+   ============================================================ */
+.pedidos-vacio {
+    text-align: center;
+    padding: 3.5rem 1rem;
+}
+
+.pedidos-vacio p {
+    font-family: var(--font-body);
+    font-size: 1.1rem;
+    color: var(--ink-soft);
+    margin: 0 0 1.25rem;
+}
+
+/* ============================================================
+   Responsive — tarjeta apilada en pantallas chicas
+   ============================================================ */
+@media (max-width: 640px) {
+    .pedido-item {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 1rem;
+    }
+
+    .pedido-info__cabecera {
+        justify-content: space-between;
+    }
+
+    .pedido-acciones {
+        justify-content: flex-end;
+    }
+}

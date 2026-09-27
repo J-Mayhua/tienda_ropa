@@ -4,13 +4,13 @@
 require_once __DIR__ . '/../vendor/autoload.php';
 require_once __DIR__ . '/../configuracion/csrf.php';
 
-// En desarrollo permite cargar variables desde .env.
-// En Vercel se usan las variables configuradas en el panel del proyecto.
+// Carga el archivo .env local si existe.
+// En Vercel, las variables se leen desde Environment Variables.
 $dotenv = Dotenv\Dotenv::createImmutable(dirname(__DIR__));
 $dotenv->safeLoad();
 
 /**
- * Lee primero $_ENV y luego el entorno del servidor.
+ * Lee una variable primero desde Dotenv y luego desde el entorno del servidor.
  */
 $leerVariable = static function (string $nombre): ?string {
     $valor = $_ENV[$nombre] ?? getenv($nombre);
@@ -22,7 +22,7 @@ $leerVariable = static function (string $nombre): ?string {
     return (string) $valor;
 };
 
-// Variables necesarias para conectarse a Aiven.
+// Variables necesarias para la conexión.
 $variablesDb = [
     'DB_HOST',
     'DB_PORT',
@@ -34,7 +34,11 @@ $variablesDb = [
 foreach ($variablesDb as $variableDb) {
     $valor = $leerVariable($variableDb);
 
-    if ($valor === null || trim($valor) === '') {
+    // La contraseña puede estar vacía en XAMPP.
+    if (
+        $valor === null ||
+        ($variableDb !== 'DB_PASSWORD' && trim($valor) === '')
+    ) {
         throw new RuntimeException(
             "Falta la variable de entorno {$variableDb}."
         );
@@ -45,7 +49,7 @@ foreach ($variablesDb as $variableDb) {
     }
 }
 
-// Valida que el puerto sea un número válido.
+// Comprueba que el puerto sea válido.
 $puertoDb = filter_var(
     DB_PORT,
     FILTER_VALIDATE_INT,
@@ -56,38 +60,44 @@ if ($puertoDb === false) {
     throw new RuntimeException('DB_PORT debe ser un puerto válido.');
 }
 
-// No se intenta conectar en el entorno de pruebas.
-$appEnv = $leerVariable('APP_ENV') ?? '';
+// En pruebas automatizadas no se abre una conexión.
 $db = null;
+$appEnv = strtolower($leerVariable('APP_ENV') ?? '');
 
 if ($appEnv !== 'testing') {
-    // Debe coincidir con la ubicación del CA certificate dentro del proyecto.
-    $caPath = __DIR__ . '/../certificados/ca.pem';
-
-    if (!is_file($caPath)) {
-        throw new RuntimeException(
-            'No se encontró el certificado CA en certificados/ca.pem.'
-        );
-    }
-
     $dsn = 'mysql:host=' . DB_HOST
          . ';port=' . $puertoDb
          . ';dbname=' . DB_NAME
          . ';charset=utf8mb4';
 
-    try {
-        $opciones = [
-            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-            PDO::ATTR_EMULATE_PREPARES => false,
-            PDO::MYSQL_ATTR_SSL_CA => $caPath,
-            PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT => true,
-            PDO::MYSQL_ATTR_TIMEOUT => 10,
-        ];
+    $opciones = [
+        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+        PDO::ATTR_EMULATE_PREPARES => false,
+        PDO::ATTR_TIMEOUT => 10,
+    ];
 
+    // XAMPP local: DB_SSL=false.
+    // Aiven en Vercel: DB_SSL=true y se requiere el certificado CA.
+    $usarSsl = strtolower($leerVariable('DB_SSL') ?? 'false') === 'true';
+
+    if ($usarSsl) {
+        $caPath = __DIR__ . '/../certificados/ca.pem';
+
+        if (!is_file($caPath)) {
+            throw new RuntimeException(
+                'Falta el certificado CA de Aiven en certificados/ca.pem.'
+            );
+        }
+
+        $opciones[PDO::MYSQL_ATTR_SSL_CA] = $caPath;
+        $opciones[PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT] = true;
+    }
+
+    try {
         $db = new PDO($dsn, DB_USER, DB_PASSWORD, $opciones);
     } catch (PDOException $e) {
-        // El detalle queda en los logs del servidor, no visible al visitante.
+        // El detalle se guarda en los logs, no se muestra al visitante.
         error_log('Error de conexión MySQL: ' . $e->getMessage());
 
         http_response_code(500);
@@ -99,8 +109,12 @@ if ($appEnv !== 'testing') {
 if (session_status() === PHP_SESSION_NONE) {
     session_name('tienda_ropa_session');
 
+    $esProduccion = in_array($appEnv, ['production', 'prod'], true);
+    $usaHttps = $esProduccion
+        || (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off');
+
     session_set_cookie_params([
-        'secure' => true,
+        'secure' => $usaHttps,
         'httponly' => true,
         'samesite' => 'Lax',
     ]);
@@ -111,9 +125,11 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-// No mostrar errores internos a los visitantes.
-ini_set('display_errors', '0');
-ini_set('display_startup_errors', '0');
+// En producción no se muestran errores internos en la página.
+$esProduccion = in_array($appEnv, ['production', 'prod'], true);
+
+ini_set('display_errors', $esProduccion ? '0' : '1');
+ini_set('display_startup_errors', $esProduccion ? '0' : '1');
 ini_set('log_errors', '1');
 
 error_reporting(E_ALL);

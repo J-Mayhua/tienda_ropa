@@ -13,19 +13,23 @@ class ModeloProductos {
     private $conexion;
 
     public function __construct(?PDO $conexion = null) {
-        if ($conexion !== null) {
-            $this->conexion = $conexion;
-            return;
-        }
-
-        try {
-            // Usar PDO para la conexión a la base de datos
-            $this->conexion = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME, DB_USER, DB_PASSWORD);
-            $this->conexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        } catch (PDOException $e) {
-            die("Error de conexión a la base de datos: " . $e->getMessage());
-        }
+    if ($conexion instanceof PDO) {
+        $this->conexion = $conexion;
+        return;
     }
+
+    // Reutiliza la conexión creada en configuracion/config.php.
+    $conexionConfigurada = $GLOBALS['db'] ?? null;
+
+    if (!$conexionConfigurada instanceof PDO) {
+        throw new \RuntimeException(
+            'La conexión PDO no está disponible desde configuracion/config.php.'
+        );
+    }
+
+    $this->conexion = $conexionConfigurada;
+}
+
 
     /**
      * Contar el número total de productos.
@@ -94,7 +98,7 @@ class ModeloProductos {
      */
     public function añadirProducto($nombre, $descripcion, $precio, $categoria, $talla, $color, $imagen, $stock, $descuento = 0) {
         try {
-            $query = "INSERT INTO productos (nombre, descripcion, precio, categoria, talla, color, imagen, stock, descuento) 
+            $query = "INSERT INTO productos (nombre, descripcion, precio, categoria, talla, color, imagen, stock, descuento)
                       VALUES (:nombre, :descripcion, :precio, :categoria, :talla, :color, :imagen, :stock, :descuento)";
             $stmt = $this->conexion->prepare($query);
             $stmt->execute([
@@ -132,16 +136,16 @@ class ModeloProductos {
      */
     public function actualizarProducto($id, $nombre, $descripcion, $precio, $categoria, $talla, $color, $imagen, $stock, $descuento = 0) {
         try {
-            $query = "UPDATE productos 
-                      SET nombre = :nombre, 
-                          descripcion = :descripcion, 
-                          precio = :precio, 
-                          categoria = :categoria, 
-                          talla = :talla, 
-                          color = :color, 
-                          imagen = :imagen, 
-                          stock = :stock, 
-                          descuento = :descuento 
+            $query = "UPDATE productos
+                      SET nombre = :nombre,
+                          descripcion = :descripcion,
+                          precio = :precio,
+                          categoria = :categoria,
+                          talla = :talla,
+                          color = :color,
+                          imagen = :imagen,
+                          stock = :stock,
+                          descuento = :descuento
                       WHERE id = :id";
             $stmt = $this->conexion->prepare($query);
             $stmt->execute([

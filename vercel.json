@@ -6,6 +6,22 @@
   },
   "rewrites": [
     {
+      "source": "/Tienda_ropa/publico/recursos/(.*)",
+      "destination": "/recursos/$1"
+    },
+    {
+      "source": "/publico/recursos/(.*)",
+      "destination": "/recursos/$1"
+    },
+    {
+      "source": "/Tienda_ropa/publico/index.php",
+      "destination": "/api/index.php"
+    },
+    {
+      "source": "/publico/index.php",
+      "destination": "/api/index.php"
+    },
+    {
       "source": "/",
       "destination": "/api/index.php"
     }

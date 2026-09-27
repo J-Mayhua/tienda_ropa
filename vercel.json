@@ -1,11 +1,11 @@
 {
   "cleanUrls": true,
   "functions": {
-    "publico/*.php": {
+    "api/index.php": {
       "runtime": "vercel-php@0.9.0"
     }
   },
   "routes": [
-    { "src": "/(.*)", "dest": "/publico/index.php" }
+    { "src": "/(.*)", "dest": "/api/index.php" }
   ]
 }

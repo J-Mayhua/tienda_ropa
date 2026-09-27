@@ -97,6 +97,38 @@ if (session_status() === PHP_SESSION_NONE) {
 $db = null;
 
 if ($appEnv !== 'testing') {
+    /*
+     * Diagnóstico temporal de red.
+     * Busca las líneas DB_DIAG en los logs de Vercel.
+     * No registra usuario, contraseña ni otros secretos.
+     */
+    $ipResuelta = gethostbyname(DB_HOST);
+
+    if ($ipResuelta === DB_HOST) {
+        error_log('DB_DIAG DNS_FAIL: no se pudo resolver el host de MySQL.');
+    } else {
+        error_log("DB_DIAG DNS_OK: host resuelto a {$ipResuelta}.");
+
+        $errno = 0;
+        $errstr = '';
+
+        $socket = @stream_socket_client(
+            'tcp://' . DB_HOST . ':' . $puertoDb,
+            $errno,
+            $errstr,
+            5
+        );
+
+        if ($socket !== false) {
+            error_log('DB_DIAG TCP_OK: se alcanzó el host y el puerto de MySQL.');
+            fclose($socket);
+        } else {
+            error_log(
+                "DB_DIAG TCP_FAIL: errno={$errno}; error={$errstr}"
+            );
+        }
+    }
+
     $dsn = 'mysql:host=' . DB_HOST
          . ';port=' . $puertoDb
          . ';dbname=' . DB_NAME

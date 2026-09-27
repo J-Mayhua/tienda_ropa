@@ -1,3 +1,3 @@
 <?php
-// Incluye el front controller manteniendo la estructura física intacta
-require __DIR__ . '/../publico/index.php';
+// Encuentra la raíz exacta del despliegue en Vercel y carga el index real
+require_once $_SERVER['DOCUMENT_ROOT'] . '/publico/index.php';
